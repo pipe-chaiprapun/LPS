@@ -1,0 +1,240 @@
+.tile {
+  padding: 0;
+  border-radius: 0.25rem;
+  margin-bottom: 20px;
+  // width: inherit;
+  // transition-duration: 0.3s;
+}
+.app-title {
+  margin-bottom: 20px;
+  display: block;
+}
+.fa {
+  cursor: pointer;
+}
+.fa-1x {
+  font-size: 1em;
+}
+.expand-todo {
+  line-height: 2;
+  font-size: 20px;
+  .badge {
+    font-size: 20px;
+    min-width: 50px;
+    line-height: normal;
+    padding-bottom: 5px;
+  }
+}
+.badge {
+  padding-bottom: 2px;
+  font-size: 12px;
+  font-size: 12px;
+  min-width: 30px;
+}
+table {
+  line-height: 1;
+  margin: 0;
+  font-size: 14px;
+}
+// th {
+//   font-weight: bold;
+// }
+.table th {
+  padding: 0.5rem;
+}
+td {
+  padding: 7px 10px;
+}
+.table-loan thead {
+  // background-color: darkcyan;
+  background-color: #009688;
+  color: whitesmoke;
+}
+.table-loan tbody tr:nth-of-type(odd) {
+  background-color: mintcream;
+}
+.table-loan tbody tr:nth-of-type(odd):hover {
+  background-color: rgba(0, 0, 0, 0.075);
+}
+.table thead th {
+  vertical-align: middle;
+}
+.td-hover:hover {
+  cursor: pointer;
+  // background-color: rgba(0, 0, 0, 0.075);
+  background-color: #86d0a7;
+}
+.custom-select-sm {
+  height: calc(1em + 0.5rem + 4px);
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+  padding-left: 0.25rem;
+  padding-right: 0rem;
+  font-size: 0.765625rem;
+}
+.btn-search {
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  height: 30px;
+}
+.form-control {
+  font-size: 14px;
+  border: 2px solid #b8e2de;
+}
+.form-control:focus {
+  border-color: #009688;
+}
+.form-control:disabled {
+  background-color: white;
+}
+input:hover,
+textarea:hover,
+select:hover {
+  border-color: #009688;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.chart-display {
+  padding-left: 10vw;
+  padding-right: 10vw;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.accordion > .card:first-of-type {
+  // border-bottom: 0;
+  // border-bottom-right-radius: 0;
+  // border-bottom-left-radius: 0;
+
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+
+.card-header {
+  padding-bottom: 0.5rem;
+}
+.expand-btn.collapsed {
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s;
+  -o-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+}
+.expand-btn {
+  -webkit-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s;
+  -o-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+}
+.heading-btn:hover {
+  cursor: pointer;
+  color: #007d71;
+}
+.form-group {
+  margin-bottom: 5px;
+}
+// .alert {
+//   margin-bottom: 0;
+//   width: max-content;
+//   padding: 0.5rem 1.25rem;
+//   float: right;
+//   h6 {
+//     margin-bottom: 0;
+//   }
+// }
+
+.collapsing {
+  transition-duration: 0.5s;
+}
+
+.expand {
+  // z-index: 999;
+  width: calc(100vw - 160px - 30px);
+  // height: calc(100vh - 52px - 30px);
+  position: fixed;
+  .card {
+    height: calc(100vh - 52px - 30px);
+  }
+}
+.expand.sidebar-mini {
+  // z-index: 999;
+  width: calc(100vw - 50px - 30px);
+  // height: calc(100vh - 52px - 30px);
+  position: fixed;
+  .card {
+    height: calc(100vh - 52px - 30px);
+  }
+}
+
+h4 {
+  margin-bottom: 0;
+}
+tfoot {
+  background-color: #86d0a7;
+  font-weight: bold;
+  .text-danger {
+    color: #ec0606 !important;
+  }
+}
+.collapse.show {
+  overflow-y: auto;
+}
+
+#dashboard {
+  max-height: calc(100vh - 50px);
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.text-coral {
+  color: coral !important;
+}
+
+.table-fixed tbody {
+  max-height: 60vh;
+  overflow-y: auto;
+  width: 100%;
+}
+.table-fixed thead,
+.table-fixed tbody,
+.table-fixed tr,
+.table-fixed td,
+.table-fixed th {
+  display: block;
+}
+.table-fixed tbody td,
+.table-fixed tbody th,
+.table-fixed thead > tr > th {
+  float: left;
+  position: relative;
+  &::after {
+    content: "";
+    clear: both;
+    display: block;
+  }
+}

@@ -1,0 +1,35 @@
+.border-left-0 {
+    border-left: 0 !important;
+}
+.border-top-0 {
+    border-top: 0 !important;
+}
+.table {
+    margin-bottom: 0.5rem;
+}
+.table-loan tbody tr:nth-of-type(odd) {
+    background-color: mintcream;
+}
+.table-loan tbody tr:nth-of-type(odd):hover {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+.table-loan thead {
+    background-color: #009688;
+    color: whitesmoke;
+}
+.sorting {
+    float: right;
+    margin-left: -10px;
+}
+.fa-sort::before {
+    content: "" !important;
+}
+tfoot {
+    background-color: #86d0a7;
+    font-weight: bold;
+    color: black;
+    /* .text-danger {
+        color: #ec0606 !important;
+    } */
+}
+

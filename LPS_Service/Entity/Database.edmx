@@ -1,0 +1,379 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Entity.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'LPSDB.dbo.LPS_ACCOUNT_DEPOSIT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="LPS_ACCOUNT_DEPOSIT">
+          <Key>
+            <PropertyRef Name="ACCTNO" />
+            <PropertyRef Name="ACTYPE" />
+          </Key>
+          <Property Name="CIFNO" Type="nvarchar" MaxLength="19" />
+          <Property Name="ACCTNO" Type="nvarchar" MaxLength="19" Nullable="false" />
+          <Property Name="PROCD" Type="nvarchar" MaxLength="2" />
+          <Property Name="ACTYPE" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="All_Product_ALCO" Type="nvarchar" MaxLength="50" />
+          <Property Name="CBAL" Type="decimal" Precision="15" Scale="2" />
+          <Property Name="RATE" Type="decimal" Precision="11" Scale="9" />
+          <Property Name="ISSDATE" Type="nvarchar" MaxLength="8" />
+          <Property Name="MATDT8" Type="nvarchar" MaxLength="8" />
+          <Property Name="ASDATE" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'LPSDB.dbo.LPS_ACCOUNT_RELATIONSHIP' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="LPS_ACCOUNT_RELATIONSHIP">
+          <Property Name="ACCTNO" Type="nvarchar" MaxLength="19" />
+          <Property Name="CIF_KEY" Type="nvarchar" MaxLength="19" />
+          <Property Name="CUSTOMER_NAME" Type="nvarchar" MaxLength="90" />
+          <Property Name="TYPE_CODE" Type="nvarchar" MaxLength="2" />
+          <Property Name="TYPE_DESC" Type="nvarchar" MaxLength="50" />
+          <Property Name="RELA_CODE" Type="nvarchar" MaxLength="2" />
+          <Property Name="RELA_DESC" Type="nvarchar" MaxLength="50" />
+          <Property Name="ASDATE" Type="nvarchar" MaxLength="10" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'LPSDB.dbo.LPS_CUSTOMER' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="LPS_CUSTOMER">
+          <Key>
+            <PropertyRef Name="CIF_KEY" />
+            <PropertyRef Name="WATCHLIST_FLAG" />
+            <PropertyRef Name="RESCHEDULE_FLAG" />
+            <PropertyRef Name="TDR_FLAG" />
+          </Key>
+          <Property Name="AO_KEY" Type="nvarchar" MaxLength="3" />
+          <Property Name="CIF_KEY" Type="int" Nullable="false" />
+          <Property Name="CUSTOMER_NAME" Type="nvarchar" MaxLength="90" />
+          <Property Name="REGISTER_DATE" Type="nvarchar" MaxLength="8" />
+          <Property Name="CUSTOMER_ADDRESS" Type="nvarchar" MaxLength="305" />
+          <Property Name="TELEPHONE" Type="nvarchar" MaxLength="20" />
+          <Property Name="FAX" Type="nvarchar" MaxLength="20" />
+          <Property Name="NO_OF_STAFF" Type="int" />
+          <Property Name="NET_PROFIT" Type="decimal" Precision="17" Scale="2" />
+          <Property Name="NET_ASSET" Type="decimal" Precision="17" Scale="2" />
+          <Property Name="BUSINESS_SIZE" Type="nvarchar" MaxLength="1" />
+          <Property Name="BUSINESS_SIZE_DESCRIPTION" Type="nvarchar" MaxLength="255" />
+          <Property Name="CUSTOMER_RATING" Type="nvarchar" MaxLength="3" />
+          <Property Name="WATCHLIST_FLAG" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="RESCHEDULE_FLAG" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="TDR_FLAG" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="ASDATE" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'LPSDB.dbo.LPS_CUSTOMER_GROUP' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="LPS_CUSTOMER_GROUP">
+          <Key>
+            <PropertyRef Name="CIF_KEY" />
+          </Key>
+          <Property Name="CUSTOMER_GROUP_NO" Type="nvarchar" MaxLength="19" />
+          <Property Name="CUSTOMER_GROUP_NAME" Type="nvarchar" MaxLength="40" />
+          <Property Name="CIF_KEY" Type="nvarchar" MaxLength="19" Nullable="false" />
+          <Property Name="CUSTOMER_NAME" Type="nvarchar" MaxLength="90" />
+          <Property Name="CUSTOMER_GROUP_RELATION" Type="nvarchar" MaxLength="50" />
+          <Property Name="ASDATE" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'LPSDB.dbo.LPS_CUSTOMER_RATING' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="LPS_CUSTOMER_RATING">
+          <Key>
+            <PropertyRef Name="RATING_TYPE" />
+          </Key>
+          <Property Name="CIF_KEY" Type="nvarchar" MaxLength="19" />
+          <Property Name="RATING_COMPANY" Type="nvarchar" MaxLength="50" />
+          <Property Name="RATING_TYPE" Type="varchar" MaxLength="11" Nullable="false" />
+          <Property Name="RATING" Type="nvarchar" MaxLength="6" />
+          <Property Name="RATING_DATE" Type="nvarchar" MaxLength="8" />
+          <Property Name="ASDATE" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="LPS_LOG_SIGNIN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="10" />
+          <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="IP" Type="nvarchar" MaxLength="60" />
+          <Property Name="TIME" Type="datetime" />
+          <Property Name="REMARK" Type="nvarchar" MaxLength="300" />
+        </EntityType>
+        <EntityType Name="LPS_TOKEN">
+          <Key>
+            <PropertyRef Name="EMPLOYEE_ID" />
+          </Key>
+          <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="TOKEN" Type="nvarchar" MaxLength="36" />
+          <Property Name="EXPIRE" Type="datetime" />
+          <Property Name="IP" Type="nvarchar" MaxLength="60" />
+        </EntityType>
+        <EntityContainer Name="EntityStoreContainer">
+          <EntitySet Name="LPS_LOG_SIGNIN" EntityType="Self.LPS_LOG_SIGNIN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LPS_TOKEN" EntityType="Self.LPS_TOKEN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LPS_ACCOUNT_DEPOSIT" EntityType="Self.LPS_ACCOUNT_DEPOSIT" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [LPS_ACCOUNT_DEPOSIT].[CIFNO] AS [CIFNO], 
+    [LPS_ACCOUNT_DEPOSIT].[ACCTNO] AS [ACCTNO], 
+    [LPS_ACCOUNT_DEPOSIT].[PROCD] AS [PROCD], 
+    [LPS_ACCOUNT_DEPOSIT].[ACTYPE] AS [ACTYPE], 
+    [LPS_ACCOUNT_DEPOSIT].[All_Product_ALCO] AS [All_Product_ALCO], 
+    [LPS_ACCOUNT_DEPOSIT].[CBAL] AS [CBAL], 
+    [LPS_ACCOUNT_DEPOSIT].[RATE] AS [RATE], 
+    [LPS_ACCOUNT_DEPOSIT].[ISSDATE] AS [ISSDATE], 
+    [LPS_ACCOUNT_DEPOSIT].[MATDT8] AS [MATDT8], 
+    [LPS_ACCOUNT_DEPOSIT].[ASDATE] AS [ASDATE]
+    FROM [dbo].[LPS_ACCOUNT_DEPOSIT] AS [LPS_ACCOUNT_DEPOSIT]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="LPS_CUSTOMER" EntityType="Self.LPS_CUSTOMER" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [LPS_CUSTOMER].[AO_KEY] AS [AO_KEY], 
+    [LPS_CUSTOMER].[CIF_KEY] AS [CIF_KEY], 
+    [LPS_CUSTOMER].[CUSTOMER_NAME] AS [CUSTOMER_NAME], 
+    [LPS_CUSTOMER].[REGISTER_DATE] AS [REGISTER_DATE], 
+    [LPS_CUSTOMER].[CUSTOMER_ADDRESS] AS [CUSTOMER_ADDRESS], 
+    [LPS_CUSTOMER].[TELEPHONE] AS [TELEPHONE], 
+    [LPS_CUSTOMER].[FAX] AS [FAX], 
+    [LPS_CUSTOMER].[NO_OF_STAFF] AS [NO_OF_STAFF], 
+    [LPS_CUSTOMER].[NET_PROFIT] AS [NET_PROFIT], 
+    [LPS_CUSTOMER].[NET_ASSET] AS [NET_ASSET], 
+    [LPS_CUSTOMER].[BUSINESS_SIZE] AS [BUSINESS_SIZE], 
+    [LPS_CUSTOMER].[BUSINESS_SIZE_DESCRIPTION] AS [BUSINESS_SIZE_DESCRIPTION], 
+    [LPS_CUSTOMER].[CUSTOMER_RATING] AS [CUSTOMER_RATING], 
+    [LPS_CUSTOMER].[WATCHLIST_FLAG] AS [WATCHLIST_FLAG], 
+    [LPS_CUSTOMER].[RESCHEDULE_FLAG] AS [RESCHEDULE_FLAG], 
+    [LPS_CUSTOMER].[TDR_FLAG] AS [TDR_FLAG], 
+    [LPS_CUSTOMER].[ASDATE] AS [ASDATE]
+    FROM [dbo].[LPS_CUSTOMER] AS [LPS_CUSTOMER]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="LPS_CUSTOMER_GROUP" EntityType="Self.LPS_CUSTOMER_GROUP" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [LPS_CUSTOMER_GROUP].[CUSTOMER_GROUP_NO] AS [CUSTOMER_GROUP_NO], 
+    [LPS_CUSTOMER_GROUP].[CUSTOMER_GROUP_NAME] AS [CUSTOMER_GROUP_NAME], 
+    [LPS_CUSTOMER_GROUP].[CIF_KEY] AS [CIF_KEY], 
+    [LPS_CUSTOMER_GROUP].[CUSTOMER_NAME] AS [CUSTOMER_NAME], 
+    [LPS_CUSTOMER_GROUP].[CUSTOMER_GROUP_RELATION] AS [CUSTOMER_GROUP_RELATION], 
+    [LPS_CUSTOMER_GROUP].[ASDATE] AS [ASDATE]
+    FROM [dbo].[LPS_CUSTOMER_GROUP] AS [LPS_CUSTOMER_GROUP]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="LPS_CUSTOMER_RATING" EntityType="Self.LPS_CUSTOMER_RATING" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [LPS_CUSTOMER_RATING].[CIF_KEY] AS [CIF_KEY], 
+    [LPS_CUSTOMER_RATING].[RATING_COMPANY] AS [RATING_COMPANY], 
+    [LPS_CUSTOMER_RATING].[RATING_TYPE] AS [RATING_TYPE], 
+    [LPS_CUSTOMER_RATING].[RATING] AS [RATING], 
+    [LPS_CUSTOMER_RATING].[RATING_DATE] AS [RATING_DATE], 
+    [LPS_CUSTOMER_RATING].[ASDATE] AS [ASDATE]
+    FROM [dbo].[LPS_CUSTOMER_RATING] AS [LPS_CUSTOMER_RATING]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Entity" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="LPSDBEntities" annotation:LazyLoadingEnabled="true" a:TypeAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" >
+          <EntitySet Name="LPS_TOKEN" EntityType="Entity.LPS_TOKEN" />
+          <EntitySet Name="LPS_LOG_SIGNIN" EntityType="Entity.LPS_LOG_SIGNIN" />
+          <EntitySet Name="LPS_ACCOUNT_DEPOSIT" EntityType="Entity.LPS_ACCOUNT_DEPOSIT" />
+          <EntitySet Name="LPS_CUSTOMER_GROUP" EntityType="Entity.LPS_CUSTOMER_GROUP" />
+          <EntitySet Name="LPS_CUSTOMER_RATING" EntityType="Entity.LPS_CUSTOMER_RATING" />
+          <EntitySet Name="LPS_CUSTOMER" EntityType="Entity.LPS_CUSTOMER" />
+        </EntityContainer>
+        <EntityType Name="LPS_TOKEN">
+          <Key>
+            <PropertyRef Name="EMPLOYEE_ID" />
+          </Key>
+          <Property Name="EMPLOYEE_ID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TOKEN" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="EXPIRE" Type="DateTime" Precision="3" />
+          <Property Name="IP" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="LPS_LOG_SIGNIN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IP" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="TIME" Type="DateTime" Precision="3" />
+          <Property Name="REMARK" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="LPS_ACCOUNT_DEPOSIT">
+          <Key>
+            <PropertyRef Name="ACCTNO" />
+            <PropertyRef Name="ACTYPE" />
+          </Key>
+          <Property Name="CIFNO" Type="String" MaxLength="19" FixedLength="false" Unicode="true" />
+          <Property Name="ACCTNO" Type="String" Nullable="false" MaxLength="19" FixedLength="false" Unicode="true" />
+          <Property Name="PROCD" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="ACTYPE" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="All_Product_ALCO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CBAL" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="RATE" Type="Decimal" Precision="11" Scale="9" />
+          <Property Name="ISSDATE" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="MATDT8" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="ASDATE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="LPS_CUSTOMER_GROUP">
+          <Key>
+            <PropertyRef Name="CIF_KEY" />
+          </Key>
+          <Property Name="CUSTOMER_GROUP_NO" Type="String" MaxLength="19" FixedLength="false" Unicode="true" />
+          <Property Name="CUSTOMER_GROUP_NAME" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="CIF_KEY" Type="String" Nullable="false" MaxLength="19" FixedLength="false" Unicode="true" />
+          <Property Name="CUSTOMER_NAME" Type="String" MaxLength="90" FixedLength="false" Unicode="true" />
+          <Property Name="CUSTOMER_GROUP_RELATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ASDATE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="LPS_CUSTOMER_RATING">
+          <Key>
+            <PropertyRef Name="RATING_TYPE" />
+          </Key>
+          <Property Name="CIF_KEY" Type="String" MaxLength="19" FixedLength="false" Unicode="true" />
+          <Property Name="RATING_COMPANY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RATING_TYPE" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="RATING" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="RATING_DATE" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="ASDATE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="LPS_CUSTOMER">
+          <Key>
+            <PropertyRef Name="CIF_KEY" />
+            <PropertyRef Name="WATCHLIST_FLAG" />
+            <PropertyRef Name="RESCHEDULE_FLAG" />
+            <PropertyRef Name="TDR_FLAG" />
+          </Key>
+          <Property Name="AO_KEY" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="CIF_KEY" Type="Int32" Nullable="false" />
+          <Property Name="CUSTOMER_NAME" Type="String" MaxLength="90" FixedLength="false" Unicode="true" />
+          <Property Name="REGISTER_DATE" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="CUSTOMER_ADDRESS" Type="String" MaxLength="305" FixedLength="false" Unicode="true" />
+          <Property Name="TELEPHONE" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="FAX" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="NO_OF_STAFF" Type="Int32" />
+          <Property Name="NET_PROFIT" Type="Decimal" Precision="17" Scale="2" />
+          <Property Name="NET_ASSET" Type="Decimal" Precision="17" Scale="2" />
+          <Property Name="BUSINESS_SIZE" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="BUSINESS_SIZE_DESCRIPTION" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CUSTOMER_RATING" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="WATCHLIST_FLAG" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="RESCHEDULE_FLAG" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="TDR_FLAG" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="ASDATE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EntityStoreContainer" CdmEntityContainer="LPSDBEntities" >
+          <EntitySetMapping Name="LPS_TOKEN">
+            <EntityTypeMapping TypeName="Entity.LPS_TOKEN">
+              <MappingFragment StoreEntitySet="LPS_TOKEN">
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="EXPIRE" ColumnName="EXPIRE" />
+                <ScalarProperty Name="TOKEN" ColumnName="TOKEN" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LPS_LOG_SIGNIN">
+            <EntityTypeMapping TypeName="Entity.LPS_LOG_SIGNIN">
+              <MappingFragment StoreEntitySet="LPS_LOG_SIGNIN">
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
+                <ScalarProperty Name="TIME" ColumnName="TIME" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LPS_ACCOUNT_DEPOSIT">
+            <EntityTypeMapping TypeName="Entity.LPS_ACCOUNT_DEPOSIT">
+              <MappingFragment StoreEntitySet="LPS_ACCOUNT_DEPOSIT">
+                <ScalarProperty Name="ASDATE" ColumnName="ASDATE" />
+                <ScalarProperty Name="MATDT8" ColumnName="MATDT8" />
+                <ScalarProperty Name="ISSDATE" ColumnName="ISSDATE" />
+                <ScalarProperty Name="RATE" ColumnName="RATE" />
+                <ScalarProperty Name="CBAL" ColumnName="CBAL" />
+                <ScalarProperty Name="All_Product_ALCO" ColumnName="All_Product_ALCO" />
+                <ScalarProperty Name="ACTYPE" ColumnName="ACTYPE" />
+                <ScalarProperty Name="PROCD" ColumnName="PROCD" />
+                <ScalarProperty Name="ACCTNO" ColumnName="ACCTNO" />
+                <ScalarProperty Name="CIFNO" ColumnName="CIFNO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LPS_CUSTOMER_GROUP">
+            <EntityTypeMapping TypeName="Entity.LPS_CUSTOMER_GROUP">
+              <MappingFragment StoreEntitySet="LPS_CUSTOMER_GROUP">
+                <ScalarProperty Name="ASDATE" ColumnName="ASDATE" />
+                <ScalarProperty Name="CUSTOMER_GROUP_RELATION" ColumnName="CUSTOMER_GROUP_RELATION" />
+                <ScalarProperty Name="CUSTOMER_NAME" ColumnName="CUSTOMER_NAME" />
+                <ScalarProperty Name="CIF_KEY" ColumnName="CIF_KEY" />
+                <ScalarProperty Name="CUSTOMER_GROUP_NAME" ColumnName="CUSTOMER_GROUP_NAME" />
+                <ScalarProperty Name="CUSTOMER_GROUP_NO" ColumnName="CUSTOMER_GROUP_NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LPS_CUSTOMER_RATING">
+            <EntityTypeMapping TypeName="Entity.LPS_CUSTOMER_RATING">
+              <MappingFragment StoreEntitySet="LPS_CUSTOMER_RATING">
+                <ScalarProperty Name="ASDATE" ColumnName="ASDATE" />
+                <ScalarProperty Name="RATING_DATE" ColumnName="RATING_DATE" />
+                <ScalarProperty Name="RATING" ColumnName="RATING" />
+                <ScalarProperty Name="RATING_TYPE" ColumnName="RATING_TYPE" />
+                <ScalarProperty Name="RATING_COMPANY" ColumnName="RATING_COMPANY" />
+                <ScalarProperty Name="CIF_KEY" ColumnName="CIF_KEY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LPS_CUSTOMER">
+            <EntityTypeMapping TypeName="Entity.LPS_CUSTOMER">
+              <MappingFragment StoreEntitySet="LPS_CUSTOMER">
+                <ScalarProperty Name="ASDATE" ColumnName="ASDATE" />
+                <ScalarProperty Name="TDR_FLAG" ColumnName="TDR_FLAG" />
+                <ScalarProperty Name="RESCHEDULE_FLAG" ColumnName="RESCHEDULE_FLAG" />
+                <ScalarProperty Name="WATCHLIST_FLAG" ColumnName="WATCHLIST_FLAG" />
+                <ScalarProperty Name="CUSTOMER_RATING" ColumnName="CUSTOMER_RATING" />
+                <ScalarProperty Name="BUSINESS_SIZE_DESCRIPTION" ColumnName="BUSINESS_SIZE_DESCRIPTION" />
+                <ScalarProperty Name="BUSINESS_SIZE" ColumnName="BUSINESS_SIZE" />
+                <ScalarProperty Name="NET_ASSET" ColumnName="NET_ASSET" />
+                <ScalarProperty Name="NET_PROFIT" ColumnName="NET_PROFIT" />
+                <ScalarProperty Name="NO_OF_STAFF" ColumnName="NO_OF_STAFF" />
+                <ScalarProperty Name="FAX" ColumnName="FAX" />
+                <ScalarProperty Name="TELEPHONE" ColumnName="TELEPHONE" />
+                <ScalarProperty Name="CUSTOMER_ADDRESS" ColumnName="CUSTOMER_ADDRESS" />
+                <ScalarProperty Name="REGISTER_DATE" ColumnName="REGISTER_DATE" />
+                <ScalarProperty Name="CUSTOMER_NAME" ColumnName="CUSTOMER_NAME" />
+                <ScalarProperty Name="CIF_KEY" ColumnName="CIF_KEY" />
+                <ScalarProperty Name="AO_KEY" ColumnName="AO_KEY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

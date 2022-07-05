@@ -1,0 +1,337 @@
+<app-auth-content>
+    <div id='od'>
+        <div class='row'>
+            <div class='col-md-12'>
+                <div class='tile'>
+                    <div class="tile-body">
+                        <ul class="nav nav-tabs" id="report-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="od-tab" data-toggle="tab" href="#odTab" role="tab"
+                                    aria-controls="odTab" aria-selected="false">Bank OD Statement</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="report-tab-content">
+                            <div class="tab-pane fade show active customer-tab" id="odTab" role="tabpanel"
+                                aria-labelledby="odTab">
+                                <div class="row">
+                                    <div class='form-group col-sm-3 col-md-3 col-lg-2'>
+                                        <label class='control-label'>Statement Review as :</label>
+                                        <select id='dateOption' class="form-control custom-select-sm"
+                                            [disabled]='!dateOpts' (change)="onDateChanged()">
+                                            <option *ngFor='let date of dateOpts' [value]="date.value">
+                                                {{date.label}}</option>
+                                        </select>
+                                        <!-- <input type="text" id='txtAsDate' readonly class="form-control form-control-sm bg-white"> -->
+                                    </div>
+                                    <div class='form-group col-sm-7 col-md-6 col-lg-4'>
+                                        <label class='control-label'>Account No. / Account Name :</label>
+                                        <select class="form-control form-control-sm" id="optAccName">
+                                            <!-- <optgroup label="&nbsp;&nbsp;Account No.&nbsp;&nbsp;[ Account Name ] "> -->
+                                            <option selected disabled value='0'>Account No.&nbsp;-&nbsp;[ Account Name ]
+                                            </option>
+                                            <option *ngFor="let opt of accounts" [value]='opt.ACC_NO'>{{opt.ACC_NO}} - [
+                                                {{opt.ACC_NAME}} ]
+                                            </option>
+                                            <!-- </optgroup> -->
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-sm-2 col-md-3" style="margin-top:auto;">
+                                        <button type='button' class='btn btn-danger btn-search btn-sm'
+                                            *ngIf='statements' (click)='clear()'>
+                                            <i class="icon fa fa-refresh fa-1x text-white"></i>
+                                            Clear
+                                        </button>
+                                        <button type='button' class='btn btn-success btn-search btn-sm ml-2'
+                                            *ngIf='statements' (click)='downloadReport()'>
+                                            <i class="icon fa fa-download fa-1x text-white"></i>
+                                            Download
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="statements">
+                                    <div class="col-md-6">
+                                        <h5>{{currentAccName}}</h5>
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="statements">
+                                    <!-- <div class="col-md-3"> -->
+                                    <form class='form-inline col-sm-6 col-md-3 mb-2'>
+                                        <div class='form-group w-100'>
+                                            <div class="input-group-prepend w-50">
+                                                <span
+                                                    class="input-group-text form-control-sm rounded-left alert-primary w-100"
+                                                    style='border-top-right-radius:0;border-bottom-right-radius:0;'>
+                                                    Account Number :
+                                                </span>
+                                            </div>
+                                            <input class="form-control form-control-sm rounded-right bg-white w-50"
+                                                readonly type="text"
+                                                style='border-top-left-radius:0;border-bottom-left-radius:0;'
+                                                [value]="currentAccNo">
+                                        </div>
+                                    </form>
+                                    <!-- </div> -->
+                                    <!-- <div class="col-md-4"> -->
+                                    <form class='form-inline col-sm-6 col-md-4 mb-2'>
+                                        <div class='form-group w-100'>
+                                            <div class="input-group-prepend" style='width:27%'>
+                                                <span
+                                                    class="input-group-text form-control-sm rounded-left alert-primary w-100"
+                                                    style='border-top-right-radius:0;border-bottom-right-radius:0;'
+                                                    data-toggle='tooltip' data-placement='bottom' title='CostCenter'>
+                                                    CostCenter :
+                                                </span>
+                                            </div>
+                                            <input class="form-control form-control-sm bg-white text-right" readonly
+                                                type="text" style='border-radius:0;width: 13%;margin-right:-2px'
+                                                [value]='currentCostCenter' data-toggle='tooltip'
+                                                data-placement='bottom' title='{{currentCostCenter}}'>
+                                            <input class="form-control form-control-sm bg-white" readonly type="text"
+                                                style='border-top-left-radius:0;border-bottom-left-radius:0;width: 60%'
+                                                [value]='currentCostCenterName' data-toggle='tooltip'
+                                                data-placement='bottom' title='{{currentCostCenterName}}'>
+                                        </div>
+                                    </form>
+                                    <!-- </div> -->
+                                    <!-- <div class="col-md-5"> -->
+                                    <form class='form-inline col-sm-6 col-md-5 mb-2'>
+                                        <div class='form-group w-100'>
+                                            <div class="input-group-prepend" style='width:25%;'>
+                                                <span
+                                                    class="input-group-text form-control-sm rounded-left alert-primary w-100"
+                                                    style='border-top-right-radius:0;border-bottom-right-radius:0;'
+                                                    data-toggle='tooltip' data-placement='bottom' title='Branch Zone'>
+                                                    Branch Zone :
+                                                </span>
+                                            </div>
+                                            <input class="form-control form-control-sm rounded-right bg-white" readonly
+                                                type="text"
+                                                style='border-top-left-radius:0;border-bottom-left-radius:0;width: 75%'
+                                                [value]='currentBranchZone' data-toggle='tooltip'
+                                                data-placement='bottom' title='{{currentBranchZone}}'>
+                                        </div>
+                                    </form>
+                                    <!-- </div> -->
+                                    <!-- <div class="col-md-3 mt-2"> -->
+                                    <form class='form-inline col-sm-6 col-md-3 mb-2'>
+                                        <div class='form-group w-100'>
+                                            <div class="input-group-prepend w-50">
+                                                <span
+                                                    class="input-group-text form-control-sm rounded-left alert-primary w-100"
+                                                    style='border-top-right-radius:0;border-bottom-right-radius:0;'
+                                                    data-toggle='tooltip' data-placement='bottom'
+                                                    title='Number of Month'>
+                                                    Number of Month :
+                                                </span>
+                                            </div>
+                                            <input
+                                                class="form-control form-control-sm text-right rounded-right bg-white w-50"
+                                                readonly type="text"
+                                                style='border-top-left-radius:0;border-bottom-left-radius:0;'
+                                                [value]='currentNoMonth' data-toggle='tooltip' data-placement='bottom'
+                                                title='{{currentNoMonth}}'>
+                                        </div>
+                                    </form>
+                                    <!-- </div> -->
+                                    <!-- <div class="col-md-4 mt-2"> -->
+                                    <form class='form-inline col-sm-6 col-md-4 mb-2'>
+                                        <div class='form-group w-100'>
+                                            <div class="input-group-prepend" style='width:27%;'>
+                                                <span
+                                                    class="input-group-text form-control-sm rounded-left alert-primary w-100"
+                                                    style='border-top-right-radius:0;border-bottom-right-radius:0;'
+                                                    data-toggle='tooltip' data-placement='bottom' title='O/D Rate'>
+                                                    O/D Rate :
+                                                </span>
+                                            </div>
+                                            <input
+                                                class="form-control form-control-sm text-right rounded-right bg-white"
+                                                readonly type="text"
+                                                style='border-top-left-radius:0;border-bottom-left-radius:0;width: 80px;'
+                                                [value]='currentOdRate' data-toggle='tooltip' data-placement='bottom'
+                                                title='{{currentOdRate}}'>
+                                        </div>
+                                    </form>
+                                    <!-- </div> -->
+                                    <!-- <div class="col-md-5 mt-2"> -->
+                                    <form class='form-inline col-sm-6 col-md-5 mb-2'>
+                                        <div class='form-group w-100'>
+                                            <div class="input-group-prepend w-25">
+                                                <span
+                                                    class="input-group-text form-control-sm rounded-left alert-primary w-100"
+                                                    style='border-top-right-radius:0;border-bottom-right-radius:0;'
+                                                    data-toggle='tooltip' data-placement='bottom' title='Branch'>
+                                                    Branch :
+                                                </span>
+                                            </div>
+                                            <input class="form-control form-control-sm rounded-right bg-white w-75"
+                                                readonly type="text"
+                                                style='border-top-left-radius:0;border-bottom-left-radius:0;'
+                                                [value]='currentBranch' data-toggle='tooltip' data-placement='bottom'
+                                                title='{{currentBranch}}'>
+                                        </div>
+                                    </form>
+                                    <!-- </div> -->
+                                </div>
+                                <br>
+                                <div class='table-responsive' *ngIf="statements">
+                                    <table class="table table-bordered table-striped table-loan table-hover">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th class='bg-white border-top-0 border-left-0'></th>
+                                                <th>Month</th>
+                                                <th>Credit</th>
+                                                <th>Turnover (THB)</th>
+                                                <th>Debit</th>
+                                                <th>Turnover (THB)</th>
+                                                <th>Highest Balance</th>
+                                                <th>Lowest Balance</th>
+                                                <th>Average Balance</th>
+                                                <th>Ending Balance</th>
+                                                <th>Swing</th>
+                                                <th>% of Swing</th>
+                                                <th>Monthly Interest</th>
+                                                <th>Returned Item</th>
+                                                <th>Dep Check Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor='let s of statements' class="text-right">
+                                                <td>{{s.NUMBER}}</td>
+                                                <td class='text-left' style='min-width:55px;'>{{s.MONTH}}</td>
+                                                <td [ngClass]="{'text-danger': s.CREDIT < 0}">{{s.CREDIT}}</td>
+                                                <td [ngClass]="{'text-danger': s.TURNOVER_CREDIT < 0}">
+                                                    {{s.TURNOVER_CREDIT | number : '1.2-2'}}
+                                                </td>
+                                                <td [ngClass]="{'text-danger': s.DEBIT < 0}">{{s.DEBIT}}</td>
+                                                <td [ngClass]="{'text-danger': s.TURNOVER_DEBIT < 0}">
+                                                    {{s.TURNOVER_DEBIT | number : '1.2-2'}}
+                                                </td>
+                                                <td [ngClass]="{'text-danger': s.HIGHEST_BAL < 0}">
+                                                    {{s.HIGHEST_BAL | number : '1.2-2'}}</td>
+                                                <td [ngClass]="{'text-danger': s.LOWEST_BAL < 0}">
+                                                    {{s.LOWEST_BAL | number : '1.2-2'}}</td>
+                                                <td [ngClass]="{'text-danger': s.AVG_BAL < 0}">
+                                                    {{s.AVG_BAL | number : '1.2-2'}}</td>
+                                                <td [ngClass]="{'text-danger': s.ENDING_BAL < 0}">
+                                                    {{s.ENDING_BAL | number : '1.2-2'}}</td>
+                                                <td [ngClass]="{'text-danger': s.SWING < 0}">
+                                                    {{s.SWING | number : '1.2-2'}}</td>
+                                                <td [ngClass]="{'text-danger': s.PER_OF_SWING < 0}">
+                                                    {{s.PER_OF_SWING | number : '1.2-2'}}</td>
+                                                <td [ngClass]="{'text-danger': s.MONTHLY_INTEREST < 0}">
+                                                    {{s.MONTHLY_INTEREST | number : '1.2-2'}}
+                                                </td>
+                                                <td [ngClass]="{'text-danger': s.RETURN_ITEM < 0}">
+                                                    {{s.RETURN_ITEM | number : '1.2-2'}}</td>
+                                                <td [ngClass]="{'text-danger': s.DEP_CHECK_AMT < 0}">
+                                                    {{s.DEP_CHECK_AMT | number : '1.2-2'}}</td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot class='font-weight-bold' style='font-size:13px;'>
+                                            <tr class="text-right">
+                                                <td colspan="2">Total:</td>
+                                                <td>{{totalCredit}}</td>
+                                                <td>{{totalCreditTurnover | number : '1.2-2'}}</td>
+                                                <td>{{totalDebit}}</td>
+                                                <td>{{totalDebitTurnover | number : '1.2-2'}}</td>
+                                                <td class='bg-white'></td>
+                                                <td class='bg-white'></td>
+                                                <td class='bg-white'></td>
+                                                <td class='bg-white'></td>
+                                                <td class='bg-white'></td>
+                                                <td class='bg-white'></td>
+                                                <td>{{totalMonthlyInterest | number : '1.2-2'}}</td>
+                                                <td>{{totalReturnItem | number : '1.2-2'}}</td>
+                                                <td>{{totalDepCheckAmt | number : '1.2-2'}}</td>
+                                            </tr>
+                                            <tr class="text-right">
+                                                <td colspan="2">Average:</td>
+                                                <td>{{avgCredit | number : '1.2-2'}}</td>
+                                                <td>{{avgTurnoverCredit | number : '1.2-2'}}</td>
+                                                <td>{{avgDebit | number : '1.2-2'}}</td>
+                                                <td>{{avgTurnoverDebit | number : '1.2-2'}}</td>
+                                                <td class='bg-white'></td>
+                                                <td class='bg-white'></td>
+                                                <td class='bg-white'></td>
+                                                <td class='bg-white'></td>
+                                                <td class='bg-white'></td>
+                                                <td class='bg-white'></td>
+                                                <td class='bg-white'></td>
+                                                <td class='bg-white'></td>
+                                                <td class='bg-white'></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <br>
+                                <div class='row' *ngIf="statements">
+                                    <div class='col-sm-6 col-md-5 col-lg-4'>
+                                        <table class='table table-success table-bordered' style='font-size:14px;'>
+                                            <tbody>
+                                                <tr>
+                                                    <td>OD Limit</td>
+                                                    <td class='text-right bg-white'>{{odLimit | number : '1.2-2'}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Avg. Credit Turn-Over</td>
+                                                    <td class='text-right bg-white'>
+                                                        {{avgTurnoverCredit | number : '1.2-2'}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>% of OD utilization</td>
+                                                    <td class='text-right bg-white'>{{perOfOdUtil | number : '1.2-2'}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Average Swing</td>
+                                                    <td class='text-right bg-white'>{{avgSwing | number : '1.2-2'}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Average % of Swing</td>
+                                                    <td class='text-right bg-white'>{{avgPerOfSwing | number : '1.2-2'}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Avg. Number of Debit</td>
+                                                    <td class='text-right bg-white'>{{avgDebit | number : '1.2-2'}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Avg. Number of Credit</td>
+                                                    <td class='text-right bg-white'>{{avgCredit | number : '1.2-2'}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class='col-sm-1 col-md-2 col-lg-4'></div>
+                                    <div class='col-sm-5 col-md-5 col-lg-4'>
+                                        <table class='table table-success table-bordered' style='font-size:14px;'>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Avg. Return Check Item</td>
+                                                    <td class='text-right bg-white'>
+                                                        {{avgReturnCheckItem | number : '1.2-2'}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Avg. Return Check Amount</td>
+                                                    <td class='text-right bg-white'>
+                                                        {{avgReturnCheckItemAmt | number : '1.2-2'}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Avg. Return Check Amount By Item</td>
+                                                    <td class='text-right bg-white'>
+                                                        {{avgReturnCheckAmtByItem | number : '1.2-2'}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-auth-content>

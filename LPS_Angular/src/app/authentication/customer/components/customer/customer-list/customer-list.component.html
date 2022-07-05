@@ -1,0 +1,297 @@
+<div class="row" id='customer-table'>
+    <div class="col-md-12">
+        <div class="tile pt-3 mb-4">
+            <!-- Filter area -->
+            <div class='row align-items-end'>
+                <div class='col-md-12'>
+                    <div class='accordion' id='accordion-customer-search'>
+                        <div class='card'>
+                            <h6 class='tile-title alert alert-success card-header hvr-underline-from-left'
+                                id="heading-search" data-toggle="collapse" data-target="#collapse-search"
+                                aria-expanded="true" aria-controls="collapse-search">Customer
+                                Search&nbsp;&nbsp;<i class="heading-indicator fa fa-angle-down fa-1x"></i></h6>
+                            <div id="collapse-search" class="collapse show" aria-labelledby="heading-search"
+                                data-parent="#accordion-customer-search">
+                                <div class='row'>
+                                    <div class='col-md-12'>
+                                        <div class='row'>
+                                            <div class='form-group col-sm-6 col-md-3 col-lg-2'>
+                                                <label class='control-label' for='txtCif'>CIF</label>
+                                                <input type="text" id='txtCif' class="form-control form-control-sm"
+                                                    #txtCif [(ngModel)]='customerFilter.cif'
+                                                    (keyup.enter)='onSubmit(txtCif.value, txtCustomerName.value)'>
+                                            </div>
+                                            <div class='form-group col-sm-6 col-md-6 col-lg-4'>
+                                                <label class='control-label' for='txtCustomerName'>Customer Name</label>
+                                                <input type='text' id='txtCustomerName'
+                                                    [(ngModel)]='customerFilter.name'
+                                                    class='form-control form-control-sm' #txtCustomerName
+                                                    (keyup.enter)='onSubmit(txtCif.value, txtCustomerName.value)'>
+                                            </div>
+                                            <div class='form-group col-sm-6 col-md-6 col-lg-3'>
+                                                <label class='control-label text-info' for='txtCustomerName'>Customer
+                                                    Group</label>
+                                                <select class="form-control form-control-sm" id="optGroups">
+                                                    <!-- <option selected disabled value='0'>Group No.&nbsp;-&nbsp;[ Group Name ]
+                                                    </option> -->
+                                                    <option value='%'>ALL</option>
+                                                    <option *ngFor="let opt of customerGroups"
+                                                        [value]='opt.CUSTOMER_GROUP_NO'
+                                                        [selected]='opt.CUSTOMER_GROUP_NO === customerFilter.group_no'>
+                                                        {{opt.CUSTOMER_GROUP_NO}} - [
+                                                        {{opt.CUSTOMER_GROUP_NAME}} ]
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class='row'>
+                                            <div class='form-group col-sm-6 col-md-3 col-lg-2'>
+                                                <label class='control-label' for='selDept'>Department</label>
+                                                <select class="form-control custom-select-sm" #selDept id='selDept'
+                                                    [disabled]='department.length == 0'
+                                                    (change)="departmentChanged($event)">
+                                                    <ng-container *ngIf='department.length > 0'>
+                                                        <option *ngFor='let dept of displayDepartment'
+                                                            [selected]="dept.ROLE_CODE == currentSession.currentRole.ROLE_CODE || dept.ROLE_CODE == this.customerFilter.department">
+                                                            {{dept.ROLE_DESC}}</option>
+                                                    </ng-container>
+                                                </select>
+                                            </div>
+                                            <div class='form-group col-sm-6 col-md-3 col-lg-2'>
+                                                <label class='control-label' for='selSubDept'>Sub Department</label>
+                                                <select class='form-control custom-select-sm' #selSubDept
+                                                    id='selSubDept' [disabled]='subDepartment.length == 0'
+                                                    (change)="subDepartmentChanged($event)">
+                                                    <ng-container *ngIf='subDepartment.length > 0'>
+                                                        <option *ngFor='let sub of displaySubDepartment'
+                                                            [selected]="sub.ROLE_CODE == currentSession.currentRole.ROLE_CODE || sub.ROLE_CODE == this.customerFilter.subDepartment">
+                                                            {{sub.ROLE_DESC}}</option>
+                                                    </ng-container>
+                                                </select>
+                                            </div>
+                                            <div class='form-group col-sm-6 col-md-3 col-lg-2'>
+                                                <label class='control-label' for='selUnit'>Unit</label>
+                                                <select class='form-control custom-select-sm' #selUnit id='selUnit'
+                                                    [disabled]='displayUnitLeader.length == 0'
+                                                    (change)="UnitLeaderChanged($event)">
+                                                    <ng-container *ngIf='displayUnitLeader.length > 0'>
+                                                        <option *ngFor='let unit of displayUnitLeader'
+                                                            [selected]="unit.ROLE_CODE == currentSession.currentRole.ROLE_CODE || unit.ROLE_CODE == this.customerFilter.unit">
+                                                            {{unit.ROLE_DESC}}</option>
+                                                    </ng-container>
+                                                </select>
+                                            </div>
+                                            <div class='form-group col-sm-6 col-md-3 col-lg-2'
+                                                *ngIf='displayUnit.length > 1'>
+                                                <label class='control-label' for='selUnit'>RM</label>
+                                                <select class='form-control custom-select-sm' #selUnit id='selUnit'
+                                                    [disabled]='displayUnit.length == 0' (change)="unitChanged($event)">
+                                                    <ng-container *ngIf='displayUnit.length > 0'>
+                                                        <option *ngFor='let unit of displayUnit'
+                                                            [selected]="unit.ROLE_CODE == currentSession.currentRole.ROLE_CODE || unit.ROLE_CODE == customerFilter.staff_no">
+                                                            {{unit.ROLE_DESC}}</option>
+                                                    </ng-container>
+                                                </select>
+                                            </div>
+                                            <div class='form-group col-sm-12 col-md-4 search-btn'
+                                                style='margin-top:auto;width:80px;'>
+                                                <!-- <a type='button' class='btn btn-success btn-search btn-sm mr-2'
+                                                    [routerLink]="['/authentication/customer/list']" [queryParams]="{
+                                                        action: 'search', 
+                                                        department: customerFilter.department, 
+                                                        sub_department: customerFilter.subDepartment,
+                                                        unit: customerFilter.unit,
+                                                        rm: customerFilter.staff_no,
+                                                        name: txtCustomerName.value
+                                                    }">
+                                                    <i class="icon fa fa-search fa-1x text-white"></i>
+                                                    Search
+                                                </a> -->
+                                                <button type='button' class='btn btn-success btn-search btn-sm mr-2'
+                                                    (click)='onSubmit(txtCif.value, txtCustomerName.value)'>
+                                                    <i class="icon fa fa-search fa-1x text-white"></i>
+                                                    Search
+                                                </button>
+                                                <!-- <button type='button' class='btn btn-success btn-search btn-sm mr-2'
+                                                    (click)='search(txtCif.value, txtCustomerName.value, false)'>
+                                                    <i class="icon fa fa-search fa-1x text-white"></i>
+                                                    Search
+                                                </button> -->
+                                                <button type='button' class='btn btn-danger btn-search btn-sm'
+                                                    [routerLink]="['/authentication/customer/list']" style='width:80px;'
+                                                    *ngIf='customerCount'>
+                                                    <i class="icon fa fa-refresh fa-1x text-white"></i>
+                                                    Clear
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-8 col-sm-12 pb-2' style='margin-top:auto;'>
+                </div>
+                <div class='col-md-4' style='padding-right:30px;' *ngIf='customerCount'>
+                    <div class='row justify-content-end'>
+                        <span class="badge badge-pill badge-primary">{{customerCount | number : '1.0'}}
+                            entries</span>
+                    </div>
+                    <div class='row justify-content-end'>
+                        <pagination class='pagination-sm' [itemsPerPage]="itemsPerPage" [totalItems]="customerCount"
+                            [rotate]="false" [maxSize]="maxPageSize" (pageChanged)="pageCustomerChanged($event)"
+                            [boundaryLinks]="true" [(ngModel)]='currentCustomerPage'>
+                        </pagination>
+                    </div>
+                </div>
+            </div>
+            <!-- Display customers area -->
+            <div class="tile-body" id='customerTable' *ngIf='displayCustomers.length > 0'>
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered table-striped table-loan" id="customerSearch">
+                        <thead class='text-center'>
+                            <tr>
+                                <th class='bg-white border-top-0 border-left-0 border-bottom-0'></th>
+                                <th (click)="sort('CIF_KEY')" rowspan="2" class='text-middle'>CIF<span
+                                        class='sorting'><i class="fa fa-sort"></i></span></th>
+                                <th (click)="sort('CUSTOMER_NAME')" rowspan="2" class='text-middle'>Customer
+                                    Name<span class='sorting'><i class="fa fa-sort"></i></span></th>
+                                <th (click)="sort('CREDIT_LIMIT')" rowspan="2" class='text-middle' style='width:100px;'>
+                                    Total<span class='sorting' style='margin-top:5px'><i
+                                            class="fa fa-sort"></i></span><br>Credit Limit</th>
+                                <th colspan="2">Outstanding</th>
+                                <th class='text-middle' rowspan="2" (click)="sort('YIELD')" style='width:60px;'>
+                                    Yield<span class='sorting'><i class="fa fa-sort"></i></span></th>
+                                <th class='text-middle' rowspan='2'>Customer Group</th>
+                                <th class='text-middle' rowspan="2" (click)="sort('STAFF_NAME')">Staff Name<span
+                                        class='sorting'><i class="fa fa-sort"></i></span></th>
+                            </tr>
+                            <tr>
+                                <th class='bg-white border-top-0 border-left-0'></th>
+                                <th (click)="sort('OUTSTANDING_CASH')">Cash<span class='sorting'><i
+                                            class="fa fa-sort"></i></span>
+                                </th>
+                                <th (click)="sort('OUTSTANDING_NON_CASH')" style='width:90px;'>Non-cash<span
+                                        class='sorting'><i class="fa fa-sort"></i></span></th>
+                            </tr>
+                        </thead>
+                        <tbody class='text-right'>
+                            <tr *ngFor='let customer of displayCustomers; index as no'>
+                                <td [routerLink]="['/authentication/customer/info', customer.CIF_KEY]">
+                                    {{((currentCustomerPage-1)*itemsPerPage) + (no+1)}}</td>
+                                <td class='text-left'
+                                    [routerLink]="['/authentication/customer/info', customer.CIF_KEY]">
+                                    {{customer.CIF_KEY}}</td>
+                                <td class='text-left'
+                                    [routerLink]="['/authentication/customer/info', customer.CIF_KEY]">
+                                    {{customer.CUSTOMER_NAME}}</td>
+                                <td [ngClass]="{'text-danger': customer.CREDIT_LIMIT < 0}"
+                                    [routerLink]="['/authentication/customer/info', customer.CIF_KEY]">
+                                    {{customer.CREDIT_LIMIT | number : '1.2-2'}}
+                                </td>
+                                <td [ngClass]="{'text-danger': customer.OUTSTANDING_CASH < 0}"
+                                    [routerLink]="['/authentication/customer/info', customer.CIF_KEY]">
+                                    {{customer.OUTSTANDING_CASH | number : '1.2-2'}}
+                                </td>
+                                <td [ngClass]="{'text-danger': customer.OUTSTANDING_NON_CASH < 0}"
+                                    [routerLink]="['/authentication/customer/info', customer.CIF_KEY]">
+                                    {{customer.OUTSTANDING_NON_CASH | number : '1.2-2'}}</td>
+                                <td [ngClass]="{'text-danger': customer.YIELD < 0}"
+                                    [routerLink]="['/authentication/customer/info', customer.CIF_KEY]">
+                                    {{customer.YIELD | number : '1.2-2'}}
+                                </td>
+                                <td class='text-center' style='width:100px'><button type='button'
+                                        class='btn btn-info btn-view' (click)='viewCustomerGroup(customer.CIF_KEY)'>
+                                        <i class="icon fa fa-search fa-1x text-white"></i>
+                                        View
+                                    </button></td>
+                                <td class='text-left'
+                                    [routerLink]="['/authentication/customer/info', customer.CIF_KEY]">
+                                    {{customer.STAFF_NAME}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Customer group modal -->
+<div class="modal fade" id="customerGroupModal" tabindex="-1" role="dialog" aria-labelledby="customerGroupLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-info">
+                <h5 class="modal-title" id="customerGroupLabel">Customer Group
+                    {{currentCustomerGroup}}/{{customerGroupCount}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <carousel [showIndicators]="false" [interval]="false" [startFromIndex]="0"
+                (activeSlideChange)="onslideChanged($event)">
+                    <slide *ngFor='let group of customerGroupDetails; index as no'>
+                        <div class="modal-body" style='padding: 1rem 5rem;max-height: 65vh;overflow-y: auto;'>
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-3">
+                                        <form class='form-inline'>
+                                            <div class='form-group w-100'>
+                                                <label class='control-label' style='margin-right:10px;'>Group
+                                                    No</label>
+                                                <input type='text' readonly
+                                                    class='form-control form-control-sm text-right w-50'
+                                                    [value]="group.groupNo">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-9 col-sm-9">
+                                        <form class='form-inline'>
+                                            <div class='form-group w-100'>
+                                                <label class='control-label' style='margin-right:10px;'>Group
+                                                    Name</label>
+                                                <input type='text' readonly class='form-control w-50 form-control-sm'
+                                                    [value]='group.groupName'>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </form>
+                            <br>
+                            <div class='table-responsive'>
+                                <table class="table table-bordered table-group">
+                                    <thead class='text-center'>
+                                        <tr>
+                                            <th scope="col" class='bg-white border-top-0 border-left-0'></th>
+                                            <th scope="col">CIF</th>
+                                            <th scope="col">Customer Name</th>
+                                            <th scope="col">Relation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor='let data of group.data; index as no'
+                                            [ngClass]="{'alert-success':currentCustomerGroupCif == data.CIF_KEY}">
+                                            <td class='text-right'>{{no+1}}</td>
+                                            <td>{{data.CIF_KEY}}</td>
+                                            <td>{{data.CUSTOMER_NAME}}</td>
+                                            <td>{{data.CUSTOMER_GROUP_RELATION}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </slide>
+            </carousel>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

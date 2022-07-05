@@ -1,0 +1,254 @@
+<div class='row'>
+    <!-- Loan portfolio table  -->
+    <div class='col-md-6'>
+        <h4 class='text-primary cursor-pointer' (click)='genChart("loan")'>Loan</h4>
+        <chart [type]='loanTypeChart' [data]='loanDataChart' [options]='loanOptionChart' *ngIf='loanChartDisplay'>
+        </chart>
+        <div class='table-responsive' *ngIf='!loanChartDisplay'>
+            <table class="table table-bordered table-striped table-loan">
+                <thead class='text-center'>
+                    <tr>
+                        <th scope="col" class='bg-white bg-white border-top-0 border-left-0'></th>
+                        <th scope="col">Credit Limit</th>
+                        <th scope="col">Outstanding</th>
+                        <th scope="col">Avg Outstanding</th>
+                    </tr>
+                </thead>
+                <tbody class='text-right'>
+                    <tr *ngFor='let l of loan'>
+                        <td class='text-left'>{{l.Product}}</td>
+                        <td>{{l.CR_LIMIT | number : "1.2-2"}}</td>
+                        <td>{{l.Total_CBAL | number : "1.2-2"}}</td>
+                        <td>{{l.AVG_CBAL | number : "1.2-2"}}</td>
+                    </tr>
+                </tbody>
+                <tfoot class='text-right'>
+                    <tr class='text-bold'>
+                        <td class='text-center'>Total</td>
+                        <td>{{loanTotalCr | number : "1.2-2"}}</td>
+                        <td>{{loanTotalCbal | number : "1.2-2"}}</td>
+                        <td>{{loanTotalAvg | number : "1.2-2"}}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <!-- Portfolio deposit table -->
+    <div class='col-md-6'>
+        <h4 class='text-primary cursor-pointer' (click)='genChart("deposit")'>Deposit</h4>
+        <chart [type]='depositTypeChart' [data]='depositDataChart' [options]='depositOptionChart'
+            *ngIf='depositChartDisplay'></chart>
+        <div class='table-responsive' *ngIf='!depositChartDisplay && deposit?.length > 0'>
+            <table class='table table-bordered table-striped table-loan'>
+                <thead class='text-center'>
+                    <tr>
+                        <th class='bg-white border-left-0 border-top-0'></th>
+                        <th>Balance</th>
+                        <th>Avg Outstanding</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let d of deposit'>
+                        <td>{{d.Product}}</td>
+                        <td class='text-right'>{{d.Total_CBAL | number : "1.2-2"}}</td>
+                        <td class='text-right'>{{d.AVG_CBAL | number : "1.2-2"}}</td>
+                    </tr>
+                </tbody>
+                <tfoot class='text-right'>
+                    <tr class='text-bold'>
+                        <td class='text-center'>Total</td>
+                        <td class='text-right'>{{depositTotalBal | number : "1.2-2"}}</td>
+                        <td>{{depositTotalAvg | number : "1.2-2"}}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class='alert alert-dismissible alert-info mb-1' *ngIf='deposit?.length < 1'>
+            <i class='fa fa-list-alt close'></i>
+            <h4 class='mb-1'>Not found</h4>
+            <h6>This customer has no deposit account.</h6>
+        </div>
+    </div>
+</div>
+<div class='row'>
+    <!-- Fee table  -->
+    <div class='col-md-6'>
+        <br>
+        <h4 class='text-primary cursor-pointer' (click)='genChart("fee")'>Fee</h4>
+        <chart [type]='feeTypeChart' [data]='feeDataChart' [options]='feeOptionChart' *ngIf='feeChartDisplay'></chart>
+        <div class='table-responsive' *ngIf='!feeChartDisplay && fee?.length > 0'>
+            <table class='table table-bordered table-striped table-loan'>
+                <thead class='text-center'>
+                    <tr>
+                        <th class='bg-white border-top-0 border-left-0'></th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let f of fee'>
+                        <td>{{f.Product}}</td>
+                        <td class='text-right'>{{f.Total_CBAL | number : "1.2-2"}}</td>
+                    </tr>
+                </tbody>
+                <tfoot class='text-right'>
+                    <tr class='text-bold'>
+                        <td class='text-center'>Total</td>
+                        <td>{{feeTotalAmt | number : "1.2-2"}}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class='alert alert-dismissible alert-info mb-1' *ngIf='fee?.length < 1'>
+            <i class='fa fa-list-alt close'></i>
+            <h4 class='mb-1'>Not found</h4>
+            <h6>This customer has no fee.</h6>
+        </div>
+    </div>
+    <div class='col-md-6'>
+        <br>
+        <form class='form-inline'>
+            <div class='form-group'>
+                <label class='control-label text-left' style='width:95px;justify-content: left;'>Total
+                    Collateral</label>
+                <input class="form-control form-control-sm text-right rounded-left" readonly type="text"
+                    [value]='collateral?.Total_CBAL | number : "1.2-2"'
+                    style='border-top-right-radius:0;border-bottom-right-radius:0;'>
+                <div class="input-group-append">
+                    <a href="javascript:;" *ngIf='collaterals?.length > 0' data-toggle="modal"
+                        data-target='#collateralModal' (click)='viewCollaterals()'><span
+                            class="input-group-text form-control-sm rounded-right alert-primary"
+                            style='border-top-left-radius:0;border-bottom-left-radius:0;'><i class="fa fa-eye mr-1"
+                                aria-hidden="true"></i>View</span></a>
+                    <span *ngIf='collaterals?.length == 0'><span
+                            class="input-group-text form-control-sm rounded-right alert-primary"
+                            style='border-top-left-radius:0;border-bottom-left-radius:0;cursor:not-allowed;'><i
+                                class="fa fa-eye mr-1" aria-hidden="true"></i>View</span></span>
+                </div>
+            </div>
+        </form>
+        <br>
+        <form class='form-inline'>
+            <div class='form-group'>
+                <label class='control-label text-left' style='width:95px;justify-content: left;'>Total Mortgage</label>
+                <input class='form-control form-control-sm text-right' readonly type='text'
+                    [value]='mortgage?.Total_CBAL | number : "1.2-2"'>
+            </div>
+        </form>
+    </div>
+</div>
+<div class='row'>
+    <div class='col-md-6'>
+        <br>
+        <form class='form-inline'>
+            <div class='form-group'>
+                <label class='control-label text-left' style='width:130px;'>YTD Interest
+                    Income</label>
+                <input class="form-control form-control-sm text-right" readonly type="text"
+                    [value]='niiYtd?.Total_CBAL | number : "1.2-2"'>
+                <label class='control-label text-danger text-left'
+                    style='width:130px;justify-content: left;padding-left:10px;'>***
+                    เฉพาะปีนี้</label>
+            </div>
+        </form>
+        <form class='form-inline'>
+            <div class='form-group'>
+                <label class='control-label text-left' style='width:130px;'>Acc. Interest
+                    Income</label>
+                <input class="form-control form-control-sm text-right" readonly type="text"
+                    [value]='niiAcc?.Total_CBAL | number : "1.2-2"'>
+                <label class='control-label text-danger text-left'
+                    style='width:130px;justify-content: left;padding-left:10px;'>***
+                    สะสมตั้งแต่มีข้อมูล</label>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- View collateral -->
+<div class="modal fade" id="collateralModal" tabindex="-1" role="dialog" aria-labelledby="collateralModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document" style='max-width: 90vw;'>
+        <div class="modal-content">
+            <div class="modal-header alert-info">
+                <h5 class="modal-title" id="collateralModalLabel">Collateral</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id='collateral-content' style='max-height: 65vh; overflow-y: auto;'>
+                    <div class='table-responsive'>
+                        <table class="table table-loan table-bordered table-hover table-striped">
+                            <thead class='text-center cursor-pointer'>
+                                <tr>
+                                    <th scope="col" (click)="sort('CCDCID')">ID<span class='sorting'><i
+                                                class="fa fa-sort"></i></span></th>
+                                    <th scope="col" (click)="sort('CCDNAM')">Name<span class='sorting'><i
+                                                class="fa fa-sort"></i></span></th>
+                                    <th scope="col" (click)="sort('CCDDSC')">Description<span class='sorting'><i
+                                                class="fa fa-sort"></i></span></th>
+                                    <th scope="col" (click)="sort('COLLATERAL_CAT')">Category<span class='sorting'><i
+                                                class="fa fa-sort"></i></span></th>
+                                    <th scope="col" (click)="sort('VALUATION_DATE')" style='min-width: 110px;'>Valuation Date<span
+                                            style='float: right;'><i class="fa fa-sort"></i></span></th>
+                                    <th scope="col" (click)="sort('NEXT_VALUATION_DATE')" style='min-width: 140px;'>Next Valuation Date<span
+                                            style='float:right;'><i class="fa fa-sort"></i></span></th>
+                                    <th scope="col" (click)="sort('CCDCMV')">Amount<span class='sorting'><i
+                                                class="fa fa-sort"></i></span></th>
+                                </tr>
+                            </thead>
+                            <tbody class='text-left'>
+                                <ng-container *ngFor='let c of collaterals'>
+                                    <tr class='cursor-pointer' (click)="c.expanded = !c.expanded"
+                                        style='background-color:mintcream;'>
+                                        <!-- <td class='text-left'><span style='font-size:18px;'>{{ c.expanded ? '&ndash;' : '+'}}</span> {{c.CCDCID}}</td> -->
+                                        <td style='width:80px;'>
+                                            <i *ngIf="c.DETAIL_FLAG=='Y' && !c.expanded"
+                                                class="fa fa-plus-square text-primary mr-1"></i>
+                                            <i *ngIf="c.DETAIL_FLAG=='Y' && c.expanded"
+                                                class="fa fa-minus-square text-danger mr-1"></i>
+                                            <span [ngClass]="{'pl-3': c.DETAIL_FLAG=='N'}">{{c.CCDCID}}</span></td>
+                                        <td>{{c.CCDNAM}}</td>
+                                        <td>{{c.CCDDSC}}</td>
+                                        <td>{{c.COLLATERAL_CAT}}</td>
+                                        <td>{{c.VALUATION_DATE}}</td>
+                                        <td>{{c.NEXT_VALUATION_DATE}}</td>
+                                        <td class='text-right'>{{c.CCDCMV | number : "1.2-2"}}</td>
+                                    </tr>
+                                    <ng-container *ngIf="c.expanded">
+                                        <tr class='bg-white' *ngFor="let d of c.COLLATERAL_DETAILS">
+                                            <td class='border-0'></td>
+                                            <td class='border-0'><i class="fa fa-bookmark mr-1"></i>{{d.DISPLAY_NAME}}
+                                            </td>
+                                            <td colspan="3" class='border-0'>
+                                                <!-- {{d.PARAM_VALUE == '' ? '-' : d.PARAM_VALUE}} -->
+                                                {{d.PARAM_VALUE == '' ? '-' : d.NUMBER_FORMAT_FLAG == 'Y' ? (d.PARAM_VALUE | number : '1.2-2') : d.PARAM_VALUE}}
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style='justify-content: unset;'>
+                <div class='row w-100'>
+                    <form class='form-inline col-12' *ngIf='totalCollateralDep > 0'>
+                        <div class='form-group w-100 mb-0'>
+                            <div class="input-group-prepend w-40">
+                                <span class="input-group-text form-control-sm rounded-left alert-primary w-100"
+                                    style='border-top-right-radius:0;border-bottom-right-radius:0;'>
+                                    มูลค่าบัญชีเงินฝากรวม :
+                                </span>
+                            </div>
+                            <input class="form-control form-control-sm rounded-right bg-white w-40 text-right" readonly
+                                type="text" style='border-top-left-radius:0;border-bottom-left-radius:0;'
+                                [value]="totalCollateralDep | number : '1.2-2'">
+                        </div>
+                    </form>
+                </div>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,372 @@
+<app-auth-content>
+  <!-- <div class="app-title">
+        <div class='row justify-content-between'>
+            <div class='col-md-3'>
+                <img src='/assets/images/logo-header.png' class='float-left' height='30'>
+            </div>
+            <div class='col-md-9'>
+                <h6>({{userInfo.username}}) {{userInfo.name}}, {{userInfo.position}} 4/2</h6>
+            </div>
+        </div>
+        <img src='/assets/images/logo-header.png' class='float-left' height='30'>
+        <h1><i class="fa fa-home"></i> Home</h1>
+        <p>A free and open source Bootstrap 4 admin template</p>
+    </div>
+    <ul class="app-breadcrumb breadcrumb">
+        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+    </ul>
+    </div> -->
+
+  <!-- Widgets part -->
+  <!-- <div class="row">
+        <div class="col-md-6 col-lg-3">
+            <div class="widget-small primary coloured-icon"><i class="icon fa fa-user-plus fa-3x"></i>
+                <div class="info">
+                    <h4>New CIF</h4>
+                    <p><b>50</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="widget-small info coloured-icon"><i class="icon fa fa-line-chart fa-3x"></i>
+                <div class="info">
+                    <h4>New Growth</h4>
+                    <p><b>1,240</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="widget-small warning coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
+                <div class="info">
+                    <h4>Total Fee</h4>
+                    <p><b>0.38</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="widget-small danger coloured-icon"><i class="icon fa fa-star fa-3x"></i>
+                <div class="info">
+                    <h4>Net NPL</h4>
+                    <p><b>0.71%</b></p>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+  <div id='dashboard'>
+    <!-- Table Part -->
+    <div class="row align-items-start">
+      <!-- todo & filter widget -->
+      <div class="col-md-7 col-sm-12" id='col-todo'>
+        <div class='row' [ngClass]='{"d-none": todoExpand}'>
+          <div class='col-12'>
+            <div class='tile mb-0'>
+              <div class="card mb-2">
+                <div class="card-body py-2 px-2">
+                  <div class='row'>
+                    <!-- <div class='form-group px-2'> -->
+                    <div class='form-group col-sm-6 col-md-6 col-lg-3'>
+                      <label class='control-label mb-0'>Department</label>
+                      <select class="form-control custom-select-sm" [disabled]='department.length == 0'
+                        (change)="departmentChanged($event)">
+                        <ng-container *ngIf='department.length > 0'>
+                          <option *ngFor='let dept of displayDepartment'
+                            [selected]="dept.ROLE_CODE == currentSession.currentRole.ROLE_CODE">
+                            {{dept.ROLE_DESC}}</option>
+                        </ng-container>
+                      </select>
+                    </div>
+                    <div class='form-group col-sm-6 col-md-6 col-lg-3'>
+                      <label class='control-label mb-0'>Sub Department</label>
+                      <select class="form-control custom-select-sm" [disabled]='subDepartment.length == 0'
+                        (change)="subDepartmentChanged($event)">
+                        <ng-container *ngIf='subDepartment.length > 0'>
+                          <option *ngFor='let sub of displaySubDepartment'
+                            [selected]="sub.ROLE_CODE == currentSession.currentRole.ROLE_CODE">
+                            {{sub.ROLE_DESC}}</option>
+                        </ng-container>
+                      </select>
+                    </div>
+                    <div class='form-group col-sm-6 col-md-6 col-lg-3'>
+                      <label class='control-label mb-0'>Unit</label>
+                      <select class="form-control custom-select-sm" [disabled]='displayUnitLeader.length == 0'
+                        (change)="UnitLeaderChanged($event)">
+                        <ng-container *ngIf='displayUnitLeader.length > 0'>
+                          <option *ngFor='let unit of displayUnitLeader'
+                            [selected]="unit.ROLE_CODE == currentSession.currentRole.ROLE_CODE">
+                            {{unit.ROLE_DESC}}</option>
+                        </ng-container>
+                      </select>
+                    </div>
+                    <div class='form-group col-sm-6 col-md-6 col-lg-4' *ngIf='displayUnit.length > 1'>
+                      <label class='control-label mb-0'>RM</label>
+                      <select class="form-control custom-select-sm" [disabled]='displayUnit.length == 0'
+                        (change)="unitChanged($event)">
+                        <ng-container *ngIf='displayUnit.length > 0'>
+                          <option *ngFor='let unit of displayUnit'
+                            [selected]="unit.ROLE_CODE == currentSession.currentRole.ROLE_CODE">
+                            {{unit.ROLE_DESC}}</option>
+                        </ng-container>
+                      </select>
+                    </div>
+                    <div class='form-group search-btn' style='margin-top:auto;'>
+                      <button type='button' class='btn btn-success btn-search btn-sm' (click)="refresh()">
+                        <i class="icon fa fa-search fa-1x text-white"></i>
+                        View
+                      </button>
+                    </div>
+                    <div *ngIf='filtered' class='form-group search-btn px-0' style='margin-top:auto;'>
+                      <button type='button' class='btn btn-danger btn-search btn-sm ml-2' (click)='clear()'>
+                        <i class="icon fa fa-refresh fa-1x text-white"></i>
+                        Clear
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-12'>
+            <div class="tile" id='tile-todo'>
+              <div class='accordion' id='accordion-todo'>
+                <div class='card'>
+                  <div class="card-header">
+                    <div class='row justify-content-between'>
+                      <div class='col-5'>
+                        <h4><i class="fa fa-list fa-1x text-info"></i>&nbsp;&nbsp;&nbsp;To Do
+                        </h4>
+                      </div>
+                      <div class='col-md-5 col-sm-6 text-right'>
+                        <!-- <div class='hvr-icon-grow'><i
+                                                        class="heading-btn fa fa-file-text mr-2 fa-1x hvr-icon"
+                                                        (click)="reportViewer('todo')"></i></div> -->
+                        <div class='hvr-icon-grow'>
+                          <i class="heading-btn fa fa-1x hvr-icon mr-2"
+                            [ngClass]="{'fa-arrows-alt': !todoExpand, 'fa-compress': todoExpand }" id='todo-expand'></i>
+                        </div>
+                        <div class='hvr-icon-grow'>
+                          <i class="heading-btn expand-btn fa fa-angle-down fa-2x hvr-icon" id="headingTodo"
+                            data-toggle="collapse" data-target="#collapseTodo" aria-expanded="true"
+                            aria-controls="collapseTodo" [ngClass]='{"d-none": todoExpand}'></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="collapseTodo" class="collapse show" aria-labelledby="headingTodo"
+                    data-parent="#accordion-todo">
+                    <div class='card-body'>
+                      <!-- <div class="overlay" *ngIf='!todo'>
+                                    <div class="m-loader mr-4">
+                                        <svg class="m-circular" viewBox="25 25 50 50">
+                                            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="4"
+                                                stroke-miterlimit="10" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="l-text">Loading</h3>
+                                </div> -->
+                      <div class='alert alert-dismissible alert-info mb-1' *ngIf='todo?.length < 1'>
+                        <i class='fa fa-list-alt close'></i>
+                        <h4 class='mb-1'>Not found</h4>
+                        <h6>The system cannot find Todo-list for this role</h6>
+                      </div>
+                      <div class='table-responsive' id='todo-table' *ngIf='todo?.length > 0'>
+                        <table class="table-bordered table table-striped table-hover table-loan"
+                          [ngClass]="{'expand-todo': todoExpand}">
+                          <thead>
+                            <tr class='text-center'>
+                              <th class='bg-white border-top-0 border-left-0'></th>
+                              <th>No. of CIF</th>
+                              <th>Total Amount</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr class='text-right' *ngFor='let todo of todo'>
+                              <td class='text-left'>
+                                {{todo.TO_DO_TOPIC}}
+                                <span *ngIf='todo.TO_DO_TOPIC == "Past Due/Due Date Warning" && red > 0'
+                                  class="badge badge-pill badge-danger float-right ml-1" data-toggle='tooltip'
+                                  data-placement='right' title='On/over due date'>{{red}}</span>
+                                <span *ngIf='todo.TO_DO_TOPIC == "Past Due/Due Date Warning" && yellow > 0'
+                                  class="badge badge-pill badge-warning float-right" data-toggle='tooltip'
+                                  data-placement='left' title='7 days before due date'>{{yellow}}</span>
+                              </td>
+                              <td class='td-hover' (click)='viewTodoDetail(todo.TO_DO_TOPIC)'>
+                                {{todo.NO_CIF}}</td>
+                              <td>{{todo.TOTAL_AMT | number : '1.4-4'}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- kpi wiget -->
+      <div class="col-md-5 col-sm-12" id='col-kpi'>
+        <div class="tile" id='tile-kpi'>
+          <div class='accordion' id='accordion-kpi'>
+            <div class='card'>
+              <div class="card-header">
+                <div class='row justify-content-between'>
+                  <div class='col-4'>
+                    <h4>
+                      <div class='hvr-icon-grow'><i class="fa fa-line-chart fa-1x text-success hvr-icon"></i></div>
+                      &nbsp;&nbsp;&nbsp;KPI
+                    </h4>
+                  </div>
+                  <div class='col-md-4 col-sm-5 text-right'>
+                    <!-- <div class='hvr-icon-grow'><i
+                                                class="heading-btn fa fa-file-text mr-2 fa-1x hvr-icon"
+                                                (click)="reportViewer('kpi')"></i></div> -->
+                    <div class='hvr-icon-grow'><i class="heading-btn mr-2 fa fa-1x hvr-icon"
+                        [ngClass]="{'fa-arrows-alt': !kpiExpand, 'fa-compress': kpiExpand }" id='kpi-expand'></i></div>
+                    <div class='hvr-icon-grow'>
+                      <i class="heading-btn expand-btn fa fa-angle-down fa-2x hvr-icon" id="headingKpi"
+                        data-toggle="collapse" data-target="#collapseKpi" aria-expanded="true"
+                        aria-controls="collapseKpi" [ngClass]='{"d-none": kpiExpand}'></i></div>
+                  </div>
+                </div>
+                <!-- <h4><i class="icon fa fa-line-chart fa-1x text-success"></i>&nbsp;&nbsp;&nbsp;KPI</h4> -->
+              </div>
+              <div id="collapseKpi" class="collapse show" aria-labelledby="headingKpi" data-parent="#accordion-kpi">
+                <!-- <div class='card-body pt-5 pb-2' style='height:48.5vh;'> -->
+                <div class='card-body'>
+                  <app-kpi-component></app-kpi-component>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- summary wiget -->
+      <div class="col-md-12" id='col-summary'>
+        <div class="tile" id='tile-summary'>
+          <div class='accordion' id='accordion-summary'>
+            <div class='card'>
+              <div class="card-header">
+                <div class='row justify-content-between'>
+                  <div class='col-4'>
+                    <h4><i class="fa fa-tasks fa-1x text-secondary"></i>&nbsp;&nbsp;&nbsp;Summary
+                      Port</h4>
+                  </div>
+                  <div class='col-md-4 col-sm-5 text-right'>
+                    <!-- <div class='hvr-icon-grow'><i
+                                                class="heading-btn fa fa-file-text mr-2 fa-1x hvr-icon"
+                                                (click)="reportViewer('summary')"></i></div> -->
+                    <div class='hvr-icon-grow'>
+                      <i class="heading-btn fa fa-1x hvr-icon mr-2"
+                        [ngClass]="{'fa-arrows-alt': !summaryExpand, 'fa-compress': summaryExpand }"
+                        id='summary-expand'></i>
+                    </div>
+                    <div class='hvr-icon-grow'>
+                      <i class="heading-btn expand-btn fa fa-angle-down fa-2x hvr-icon" id="headingSummary"
+                        data-toggle="collapse" data-target="#collapseSummary" aria-expanded="true"
+                        aria-controls="collapseSummary" [ngClass]='{"d-none": summaryExpand}'></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="collapseSummary" class="collapse show" aria-labelledby="headingSummary"
+                data-parent="#accordion-summary">
+                <div class='card-body'>
+                  <app-summary-port></app-summary-port>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-auth-content>
+
+<div class="modal fade" id="newCifModal" tabindex="-1" role="dialog" aria-labelledby="newCifModalTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header alert-success">
+        <h5 class="modal-title">{{modalHeader}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <br>
+        <div id='todo-content' style='max-height: 60vh; overflow-y: auto;'>
+          <table class="table table-bordered table-striped table-hover table-loan">
+            <thead class='text-center'>
+              <tr>
+                <th *ngIf='todoDetail && todoDetail[0].TO_DO_TOPIC == "Past Due/Due Date Warning"' class='bg-white'
+                  style='border-top-color:white;border-left-color:white;'></th>
+                <th scope="col">CIF</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Ref No.</th>
+                <th scope="col">Account No.</th>
+                <th scope="col">Expired Date</th>
+                <th scope='col'>Total Amount</th>
+                <th scope="col">Other Info</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- <tr *ngFor='let cust of todoDetail' class='text-left' data-toggle="collapse"
+                                data-target='.todo-account'
+                                [ngClass]='{"text-danger": cust.TO_DO_TOPIC == "Bill Warning" && findPeriodDays(cust.EXPIRED_DATE) <= 7, 
+                                "text-coral": cust.TO_DO_TOPIC == "Bill Warning" && findPeriodDays(cust.EXPIRED_DATE) <= 15 && findPeriodDays(cust.EXPIRED_DATE) > 7}'> -->
+              <tr *ngFor='let cust of todoDetail' class='text-left' data-toggle="collapse" data-target='.todo-account'
+                [ngClass]='{"text-danger": cust.TO_DO_TOPIC == "Past Due/Due Date Warning" && findPeriodDays(cust.EXPIRED_DATE) < 0}'>
+                <td *ngIf='todoDetail && todoDetail[0].TO_DO_TOPIC == "Past Due/Due Date Warning"' class='text-center'>
+                  <i *ngIf='findPeriodDays(cust.EXPIRED_DATE) >= 1 && findPeriodDays(cust.EXPIRED_DATE) <= 15'
+                    aria-hidden="true" class='text-coral fa'
+                    [ngClass]='{"fa-bell": cust.TO_DO_TOPIC == "Past Due/Due Date Warning" && findPeriodDays(cust.EXPIRED_DATE) <= 7, 
+                                                    "fa-bell-o": cust.TO_DO_TOPIC == "Past Due/Due Date Warning" && findPeriodDays(cust.EXPIRED_DATE) <= 15 && findPeriodDays(cust.EXPIRED_DATE) > 7}'></i>
+                  <i *ngIf='findPeriodDays(cust.EXPIRED_DATE) < 1' class='fa fa-exclamation-circle text-danger'
+                    aria-hidden="true"></i>
+                </td>
+                <td>{{cust.CIFNO}}</td>
+                <td>{{cust.CUSTOMER_NAME}}</td>
+                <td>{{cust.REF_NO}}</td>
+                <td>{{cust.ACCOUNT_NO}}</td>
+                <td>{{cust.EXPIRED_DATE | date: 'dd/MM/yyyy'}}
+                  <!-- &nbsp;
+                                    <span
+                                        *ngIf='cust.TO_DO_TOPIC == "Bill Warning" && findPeriodDays(cust.EXPIRED_DATE) <= 15'>(
+                                        {{findPeriodDays(cust.EXPIRED_DATE)}} days before due date )
+                                    </span> -->
+                </td>
+                <td class='text-right'>{{cust.CBAL | number : '1.4-4'}}</td>
+                <td>{{cust.OTHER_INFO}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer" style='justify-content: unset;'
+        *ngIf='todoDetail && todoDetail[0].TO_DO_TOPIC == "Past Due/Due Date Warning"'>
+        <div class='row w-100'>
+          <form class='form-inline col-md-12' style='font-size:16px'>
+            <label class='mr-2 text-danger'>***</label>
+            <i class='text-coral fa fa-bell-o'></i>
+            <label>&nbsp;=&nbsp;15 days before due date, &nbsp;</label>
+            <i class='text-coral fa fa-bell'></i>
+            <label>&nbsp;=&nbsp;7 days before due date, &nbsp;</label>
+            <i class='text-danger fa fa-exclamation-circle'></i>
+            <label>&nbsp;=&nbsp;On/over due date</label>
+          </form>
+        </div>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+      <div class="modal-footer" *ngIf='todoDetail && todoDetail[0].TO_DO_TOPIC != "Past Due/Due Date Warning"'>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,218 @@
+<div class="overlay" *ngIf='!viewCustomer'>
+    <div class="m-loader mr-4">
+        <svg class="m-circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="4" stroke-miterlimit="10" />
+        </svg>
+    </div>
+    <h3 class="l-text">Loading</h3>
+</div>
+<ng-container *ngIf='viewCustomer'>
+    <div class='row form-line align-items-end '>
+        <div class='form-group col-md-2 col-sm-3'>
+            <label class='control-label'>Register Date</label>
+            <input type="text" readonly class="form-control text-left form-control-sm"
+                [value]="viewCustomer.REGISTER_DATE">
+        </div>
+    </div>
+    <div class='row form-line'>
+        <div class='form-group col-md-8 col-sm-12'>
+            <label class="control-label">Address</label>
+            <textarea class="form-control" readonly rows='1'>{{viewCustomer.CUSTOMER_ADDRESS}}</textarea>
+        </div>
+    </div>
+    <div class='row form-line'>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class="control-label">Telephone</label>
+            <input type="text" readonly class="form-control form-control-sm" [value]="viewCustomer.TELEPHONE">
+        </div>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>Fax</label>
+            <input type='text' readonly class='form-control form-control-sm' [value]='viewCustomer.FAX'>
+        </div>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>No. of Staff</label>
+            <input type='text' readonly class='form-control text-right form-control-sm'
+                [value]='viewCustomer.NO_OF_STAFF'>
+        </div>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>Net Asset</label>
+            <input type='text' readonly class='form-control text-right form-control-sm'
+                [value]='viewCustomer.NET_ASSET | number : "1.2-2"'>
+        </div>
+    </div>
+    <div class='row form-line align-items-end'>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>Net Profit</label>
+            <input type='text' readonly class='form-control text-right form-control-sm'
+                [value]='viewCustomer.NET_PROFIT | number : "1.2-2"'>
+        </div>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>Business Size</label>
+            <input type='text' readonly class='form-control form-control-sm text-left'
+                [value]='viewCustomer.BUSINESS_SIZE'>
+        </div>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>Classification</label>
+            <input type='text' readonly class='form-control form-control-sm text-center'
+                [value]='viewCustomer.CLASSIFICATION'>
+        </div>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>Total Provision</label>
+            <input type='text' readonly class='form-control form-control-sm text-right'
+                [value]='viewCustomer.TOTAL_PROVISION | number : "1.2-2"'>
+        </div>
+        <div class='form-group col-md-2 px-0'>
+            <label class='control-label text-danger text-left' style='width:180px;vertical-align: super;'>* ข้อมูล ณ
+                วันที่ {{viewCustomer.PARAM_VALUE}}</label>
+        </div>
+    </div>
+    <div class='row form-line align-items-end'>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>Watch List</label>
+            <input type='text' readonly class='form-control form-control-sm text-center'
+                [value]="viewCustomer.WATCHLIST_FLAG">
+        </div>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>Reschedule</label>
+            <input type='text' readonly class='form-control form-control-sm text-center'
+                [value]="viewCustomer.RESCHEDULE_FLAG">
+        </div>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>TDR</label>
+            <input type='text' readonly class='form-control form-control-sm text-center'
+                [value]="viewCustomer.TDR_FLAG">
+        </div>
+        <div class='col-md-6'>
+            <ng-container *ngIf='customerInfo'>
+                <button type='button' class='btn btn-info btn-sm' style='margin-right:10px;margin-bottom:0.5rem;'
+                    data-toggle="modal" data-target="#customerGroupModal" (click)='onCustomerGroupClick()'
+                    *ngIf='customerInfo.customerGroup.length > 0'>
+                    <i class="icon fa fa-users fa-1x text-white"></i>&nbsp;Customer
+                    Group</button>
+                <button type='button' class='btn btn-success btn-sm' data-toggle='modal'
+                    data-target='#creditRatingModel' style='margin-bottom:0.5rem;'
+                    *ngIf='customerInfo.creditRating.length > 0'>
+                    <i class="icon fa fa-star-half-o fa-1x text-white"></i>&nbsp;Credit
+                    Rating / Scoring</button>
+            </ng-container>
+        </div>
+    </div>
+</ng-container>
+
+<!-- Customer group modal -->
+<div class="modal fade" id="customerGroupModal" tabindex="-1" role="dialog" aria-labelledby="customerGroupLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-info">
+                <h5 class="modal-title" id="customerGroupLabel">Customer Group
+                    {{currentCustomerGroup}}/{{customerGroupCount}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <carousel [showIndicators]="false" [interval]="false" [(activeSlide)]="currentIndex" [startFromIndex]="0"
+                (activeSlideChange)="onslideChanged($event)">
+                <ng-container *ngIf='customerInfo'>
+                    <slide *ngFor='let group of customerInfo.customerGroup; index as no'>
+                        <div class="modal-body" style='padding: 1rem 5rem;'>
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-3">
+                                        <form class='form-inline'>
+                                            <div class='form-group w-100'>
+                                                <label class='control-label' style='margin-right:10px;'>Group
+                                                    No</label>
+                                                <input type='text' readonly
+                                                    class='form-control form-control-sm text-right w-50'
+                                                    [value]="group.groupNo">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-9 col-sm-9">
+                                        <form class='form-inline'>
+                                            <div class='form-group w-100'>
+                                                <label class='control-label' style='margin-right:10px;'>Group
+                                                    Name</label>
+                                                <input type='text' readonly class='form-control w-50 form-control-sm'
+                                                    [value]='group.groupName'>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </form>
+                            <br>
+                            <div class='table-responsive' *ngIf='viewCustomer'>
+                                <table class="table table-bordered table-group">
+                                    <thead class='text-center'>
+                                        <tr>
+                                            <th scope="col" class='bg-white border-top-0 border-left-0'></th>
+                                            <th scope="col">CIF</th>
+                                            <th scope="col">Customer Name</th>
+                                            <th scope="col">Relation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- <tr *ngFor='let data of group.data; index as no'
+                                            [ngClass]="{'current-customer':viewCustomer.CIF_KEY == data.CIF_KEY}"> -->
+                                        <tr *ngFor='let data of group.data; index as no'
+                                            [ngClass]="{'alert-success':viewCustomer.CIF_KEY == data.CIF_KEY}">
+                                            <td class='text-right'>{{no+1}}</td>
+                                            <td>{{data.CIF_KEY}}</td>
+                                            <td>{{data.CUSTOMER_NAME}}</td>
+                                            <td>{{data.CUSTOMER_GROUP_RELATION}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </slide>
+                </ng-container>
+            </carousel>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" (click)="clear()" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Credit rating modal -->
+<div class="modal fade" id="creditRatingModel" tabindex="-1" role="dialog" aria-labelledby="creditRatingLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-success">
+                <h5 class="modal-title" id="creditRatingLabel">Credit Rating / Scoring</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <br>
+                <table class="table table-bordered table-striped table-loan">
+                    <thead class='text-center'>
+                        <tr>
+                            <th scope="col">Type Rating</th>
+                            <th scope="col">Rating Company</th>
+                            <th scope="col">Rating</th>
+                            <th scope="col">Rating Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf='customerInfo'>
+                            <tr *ngFor='let rating of customerInfo.creditRating'>
+                                <td>{{rating.RATING_TYPE}}</td>
+                                <td>{{rating.RATING_COMPANY}}</td>
+                                <td>{{rating.RATING}}</td>
+                                <td>{{rating.RATING_DATE}}</td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

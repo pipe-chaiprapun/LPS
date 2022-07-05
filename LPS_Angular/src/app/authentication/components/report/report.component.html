@@ -1,0 +1,190 @@
+<app-auth-content>
+    <div id='report'>
+        <div class='row'>
+            <div class='col-md-12'>
+                <div class='tile'>
+                    <div class="tile-body">
+                        <!-- Customer Info tab list -->
+                        <ul class="nav nav-tabs" id="report-tab" role="tablist">
+                            <!-- <li class="nav-item">
+                <a class="nav-link" id="od-tab2" data-toggle="tab" href="#odTab2"
+                   role="tab" aria-controls="odTab2" aria-selected="true">Bank OD Statement</a>
+              </li> -->
+                            <li class="nav-item">
+                                <a class="nav-link active" id="od-tab" data-toggle="tab" href="#odTab" role="tab"
+                                    aria-controls="odTab" aria-selected="false">Bank OD Statement</a>
+                            </li>
+                        </ul>
+                        <!-- Tab Content -->
+                        <div class="tab-content" id="report-tab-content">
+                            <!-- Customer info tab -->
+                            <!-- <div class="tab-pane fade show active customer-tab" id="odTab2" role="tabpanel"
+                   aria-labelledby="odTab2">
+                <app-od-report2></app-od-report2>
+              </div> -->
+                            <div class="tab-pane fade show active customer-tab" id="odTab" role="tabpanel"
+                                aria-labelledby="odTab">
+                                <app-od-report></app-od-report>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class='col-md-12'>
+          <div class='tile'>
+              <ul class="nav nav-tabs" role="tablist">
+                  <li class="nav-item">
+                      <a class="nav-link active" data-toggle="tab" href="#summary-tab" role="tab"
+                          aria-controls="summary-tab" aria-selected="true">Summary</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#customer-tab" role="tab"
+                          aria-controls="customer-tab" aria-selected="false">Customer</a>
+                  </li>
+              </ul>
+              <div class="tab-content">
+                  <div class="tab-pane fade show active" id="summary-tab" role="tabpanel"
+                      aria-labelledby="summary-tab">
+                      <iframe class='report-viewer' [src]="summaryReport"></iframe>
+                  </div>
+                  <div class="tab-pane fade" id="customer-tab" role="tabpanel" aria-labelledby="customer-tab">
+                      <iframe class='report-viewer' [src]="lstCustomerReport"></iframe>
+                  </div>
+              </div>
+              <form>
+                  <div class='row'>
+                      <div class='col-md-2'>
+                          <label class='control-label'>Period</label>
+                      </div>
+                  </div>
+                  <div class='row'>
+                      <div class='form-group col-md-2'>
+                          <input type="text" id='from' class="form-control form-control-sm text-center"
+                              placeholder="From">
+                      </div>
+                      <div class='form-group col-md-2'>
+                          <input type="text" id='to' class="form-control form-control-sm text-center"
+                              placeholder="To">
+                      </div>
+                      <div class=' form-group col-md-6' style='margin-top:auto;'>
+                          <button type='button' class='btn btn-success btn-search btn-sm'>
+                              <i class="icon fa fa-search fa-1x text-white"></i>
+                              Search
+                          </button>
+                      </div>
+                  </div>
+              </form>
+              <br>
+              <div class='tile-body'>
+                  <div class='table-responsive'>
+                      <table class='table table-bordered table-striped table-loan'>
+                          <thead class='text-center'>
+                              <tr>
+                                  <th class='bg-white border-top-0 border-left-0'></th>
+                                  <th>Target</th>
+                                  <th>YTD</th>
+                                  <th>Aug 2019</th>
+                                  <th>Jul 2019</th>
+                                  <th>Jun 2019</th>
+                              </tr>
+                          </thead>
+                          <tbody class='text-right'>
+                              <tr>
+                                  <td class='text-left text-bold'>New CIF</td>
+                                  <td>300.00</td>
+                                  <td>0.00</td>
+                                  <td>0.00</td>
+                                  <td>0.00</td>
+                                  <td>0.00</td>
+                              </tr>
+                              <tr>
+                                  <td class='text-left text-bold'>New Growth (ฝ่าย)</td>
+                                  <td>1,740.00</td>
+                                  <td>3,000.00</td>
+                                  <td>3,000.00</td>
+                                  <td>2,600.00</td>
+                                  <td>2,700.00</td>
+                              </tr>
+                              <tr>
+                                  <td class='text-left text-bold'>New Growth</td>
+                                  <td>390.00</td>
+                                  <td>1,240.77</td>
+                                  <td>1,240.77</td>
+                                  <td>1,300.00</td>
+                                  <td>1,210.00</td>
+                              </tr>
+                              <tr>
+                                  <td class='text-left text-bold'>Interest Income</td>
+                                  <td>232.83</td>
+                                  <td>147.95</td>
+                                  <td>20.82</td>
+                                  <td>15.72</td>
+                                  <td>14.32</td>
+                              </tr>
+                              <tr>
+                                  <td class='text-left text-bold'>Total Fee</td>
+                                  <td>4.40</td>
+                                  <td>2.48</td>
+                                  <td>0.38</td>
+                                  <td>0.10</td>
+                                  <td>0.50</td>
+                              </tr>
+                              <tr>
+                                  <td class='text-left text-bold'>Net NPL(%)</td>
+                                  <td>0.00</td>
+                                  <td>0.71</td>
+                                  <td>0.71</td>
+                                  <td>0.00</td>
+                                  <td>0.00</td>
+                              </tr>
+                              <tr>
+                                  <td class='text-left text-bold'>Cross Selling</td>
+                                  <td></td>
+                                  <td>2.00</td>
+                                  <td>1.00</td>
+                                  <td>0.00</td>
+                                  <td>1.00</td>
+                              </tr>
+                              <tr>
+                                  <td class='text-left text-bold'>ต่ออายุไม่ทันตามกำหนด</td>
+                                  <td></td>
+                                  <td>1.00</td>
+                                  <td>1.00</td>
+                                  <td>0.00</td>
+                                  <td>0.00</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div> -->
+        </div>
+        <!-- <div class="row">
+        <div class="col-md-6">
+            <div class="tile">
+                <h3 class="tile-title">Line Chart</h3>
+                <chart [type]='typeChart' [data]='chartData' [options]='optionsChart'></chart>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="tile">
+                <h3 class="tile-title">Bar Chart</h3>
+                <chart [type]='typeChart2' [data]='chartData' [options]='optionsChart'></chart>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="tile">
+                <h3 class="tile-title">Radar Chart</h3>
+                <chart [type]='typeChart3' [data]='chartData' [options]='optionsChart'></chart>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="tile">
+                <h3 class="tile-title">Polar Chart</h3>
+                <chart [type]='typeChart4' [data]='pData' [options]='optionsChart'></chart>
+            </div>
+        </div>
+    </div> -->
+    </div>
+</app-auth-content>

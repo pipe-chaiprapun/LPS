@@ -1,0 +1,222 @@
+<!-- Filter area -->
+<div class='row align-items-end'>
+    <div class='col-md-12'>
+        <!-- <div class='accordion' id='accordion-customer-search'> -->
+        <!-- <div class='card'> -->
+        <!-- <h6 class='tile-title alert alert-success card-header hvr-underline-from-left' id="heading-search"
+                data-toggle="collapse" data-target="#collapse-search" aria-expanded="true"
+                aria-controls="collapse-search">RM
+                Search&nbsp;&nbsp;<i class="heading-indicator fa fa-angle-down fa-1x"></i></h6> -->
+        <!-- <div id="collapse-search" class="collapse show" aria-labelledby="heading-search"
+                data-parent="#accordion-customer-search"> -->
+        <div class='row'>
+            <form class='col-md-12'>
+                <div class='row'>
+                    <div class='form-group col-md-2'>
+                        <label class='control-label'>Employee ID</label>
+                        <input type='text' id='txtEmployee' class='form-control form-control-sm' #txtEmployee
+                            (keyup.enter)='search(txtEmployee.value, txtRmName.value)'>
+                    </div>
+                    <div class='form-group col-md-2'>
+                        <label class='control-label'>RM Name</label>
+                        <input type='text' id='txtRmName' class='form-control form-control-sm' #txtRmName
+                            (keyup.enter)='search(txtEmployee.value, txtRmName.value)'>
+                    </div>
+                    <div class='form-group col-md-2'>
+                        <label class='control-label'>Role Status</label>
+                        <select id='select-role' class="form-control custom-select-sm" (change)="roleCheck($event)">
+                            <option value='A'>All</option>
+                            <option value="Y">Assigned</option>
+                            <option value="N">No role</option>
+                        </select>
+                    </div>
+                    <div class='form-group col-md-2'>
+                        <label class='control-label'>Account Status</label>
+                        <select id='select-status' class="form-control custom-select-sm" (change)="activeCheck($event)">
+                            <option value='%'>All</option>
+                            <option value="Y">Active</option>
+                            <option value="N">Disabled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='form-group col-md-2'>
+                        <label class='control-label'>Department</label>
+                        <select class="form-control custom-select-sm" #selDept [disabled]='department.length == 0'
+                            (change)="departmentChanged($event)">
+                            <option *ngFor='let dept of department'>
+                                {{dept.ROLE_DESC}}</option>
+                        </select>
+                    </div>
+                    <div class='form-group col-md-2'>
+                        <label class='control-label'>Sub Department</label>
+                        <select class='form-control custom-select-sm' #selSubDept [disabled]='subDepartment.length == 0'
+                            (change)="subDepartmentChanged($event)">
+                            <ng-container *ngIf='subDepartment.length > 0'>
+                                <option *ngFor='let sub of subDepartment'>
+                                    {{sub.ROLE_DESC}}</option>
+                            </ng-container>
+                        </select>
+                    </div>
+                    <div class='form-group col-md-2'>
+                        <label class='control-label'>Unit</label>
+                        <select class='form-control custom-select-sm' #selUnit [disabled]='unitLeader.length == 0'
+                            (change)="unitLeaderChanged($event)">
+                            <ng-container *ngIf='unitLeader.length > 0'>
+                                <option *ngFor='let unit of unitLeader'>
+                                    {{unit.ROLE_DESC}}</option>
+                            </ng-container>
+                        </select>
+                    </div>
+                    <div class='form-group col-md-3 search-btn' style='margin-top:auto;width:80px;'>
+                        <button type='button' class='btn btn-success btn-search btn-sm mr-2'
+                            (click)='search(txtEmployee.value, txtRmName.value)'>
+                            <i class="icon fa fa-search fa-1x text-white"></i>
+                            Search
+                        </button>
+                        <button type='button' class='btn btn-danger btn-search btn-sm' (click)='clearForm()'
+                            style='width: 80px;'>
+                            <i class="icon fa fa-refresh fa-1x text-white"></i>
+                            clear
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- </div> -->
+        <!-- </div> -->
+        <!-- </div> -->
+    </div>
+</div>
+<div class='row'>
+    <div class='col-md-8'></div>
+    <div class='col-md-4' style='padding-right:30px;' *ngIf='rmCount'>
+        <div class='row justify-content-end'>
+            <span class="badge badge-pill badge-primary">{{rmCount | number : '1.0'}}
+                entries</span>
+        </div>
+        <div class='row justify-content-end'>
+            <pagination class='pagination-sm' [itemsPerPage]="itemsPerPage" [totalItems]="rmCount" [rotate]="false"
+                [maxSize]="maxPageSize" (pageChanged)="pageRmChanged($event)" [boundaryLinks]="true">
+            </pagination>
+        </div>
+    </div>
+</div>
+<!-- display users area -->
+<div class="table-responsive" *ngIf='displayUsers.length > 0'>
+    <table class="table table-bordered table-striped table-loan" id="customerSearch">
+        <thead class='text-center'>
+            <tr>
+                <th class='bg-white border-top-0 border-left-0 border-bottom-0'></th>
+                <th (click)="sort('STAFF_NO')" class='text-middle'>Employee ID<span class='sorting'><i
+                            class="fa fa-sort"></i></span></th>
+                <th (click)="sort('STAFF_NAME')" class='text-middle'>Rm Name<span class='sorting'><i
+                            class="fa fa-sort"></i></span></th>
+                <th (click)="sort('ROLE_CODE')" class='text-middle'>Role<span class='sorting'><i
+                            class="fa fa-sort"></i></span></th>
+                <th (click)="sort('ACTIVE_FLAG')" class='text-middle'>Status<span class='sorting'><i
+                            class="fa fa-sort"></i></span></th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let user of displayUsers; index as no'>
+                <td class='text-right'>{{((currentUserPage-1)*itemsPerPage) + (no+1)}}</td>
+                <td>{{user.STAFF_NO}}</td>
+                <td>{{user.STAFF_NAME}}</td>
+                <td>{{user.ROLE_DESC}}</td>
+                <td>{{user.ACTIVE_FLAG}}</td>
+                <td class='text-center py-1'><button type='button' class='btn btn-success btn-view'
+                        (click)='viewRm(user)'>
+                        <i class="icon fa fa-pencil-square-o fa-1x text-white"></i>
+                        Edit
+                    </button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Select Main Unit Modal -->
+<!-- <div class="modal fade" id="search-user-main-unit-modal" tabindex="-1" role="dialog" aria-labelledby="mainUnitLabel"
+    aria-hidden="true" data-backdrop='static'>
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-info">
+                <h5 class="modal-title" id="mainUnitLabel">Main Unit</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="collapse()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style='padding: 1rem 1rem;'>
+                <button type='button' class='btn btn-info btn-sm py-1 mr-2' (click)="expand()">
+                    <i class="icon fa fa-plus-square-o fa-1x text-white"></i>
+                    Expand
+                </button>
+                <button type='button' class='btn btn-secondary btn-sm ' (click)="collapse()">
+                    <i class="icon fa fa-minus-square-o fa-1x text-white"></i>
+                    Collapse
+                </button>
+                <hr>
+                <ng-container *ngIf='units'>
+                    <div class="treeview-animated">
+                        <ul class="treeview-animated-list mb-3">
+                            <ng-container *ngFor='let unit of units'>
+                                <li class="treeview-animated-items" *ngIf='unit.child'>
+                                    <a class="closed">
+                                        <i class="fa fa-angle-right mr-1"></i>
+                                        <span><i class="fa {{unit.icon}} mr-2"></i> {{unit.unitId}}
+                                            {{unit.unitName}}</span>
+                                        <span class='mr-2 add-btn' (click)='chooseUnit(unit.unitId, unit.unitName)'>
+                                            <i class="fa fa-plus-circle"></i>
+                                        </span>
+                                    </a>
+                                    <ul class="nested">
+                                        <li class="treeview-animated-items" *ngFor='let child of unit.child'>
+                                            <a class="closed"><i class="fa fa-angle-right mr-2"></i>
+                                                <span>{{child.unitId}} {{child.unitName}}</span>
+                                                <span class='mr-2 add-btn'
+                                                    (click)='chooseUnit(child.unitId, child.unitName)'><i
+                                                        class="fa fa-plus-circle"></i></span>
+                                            </a>
+                                            <ul class="nested">
+                                                <li class="treeview-animated-items" *ngFor='let child1 of child.child'>
+                                                    <a class="closed"><i class="fa fa-angle-right mr-2"></i>
+                                                        <span>{{child1.unitId}} {{child1.unitName}}</span>
+                                                        <span class='mr-2 add-btn'><i class="fa fa-plus-circle"
+                                                                (click)='chooseUnit(child1.unitId, child1.unitName)'></i></span>
+                                                    </a>
+                                                    <ul class="nested">
+                                                        <li *ngFor='let child2 of child1.child'>
+                                                            <div class="treeview-animated-element"><i
+                                                                    class="fa fa-circle-o mr-1"></i>{{child2.unitId}}
+                                                                {{child2.unitName}}
+                                                                <span class='mr-2 add-btn'><i class="fa fa-plus-circle"
+                                                                        (click)='chooseUnit(child2.unitId, child2.unitName)'></i></span>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li *ngIf='!unit.child'>
+                                    <div class='treeview-animated-element'>
+                                        <span class='ml-2'><i class="fa {{unit.icon}} mr-3"></i>{{unit.unitId}}
+                                            {{unit.unitName}}</span>
+                                        <span class='mr-2 add-btn' (click)='chooseUnit(unit.unitId, unit.unitName)'><i
+                                                class="fa fa-plus-circle"></i></span>
+                                    </div>
+                                </li>
+                            </ng-container>
+                        </ul>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger py-1" data-dismiss="modal"
+                    (click)="collapse()">Close</button>
+            </div>
+        </div>
+    </div>
+</div> -->

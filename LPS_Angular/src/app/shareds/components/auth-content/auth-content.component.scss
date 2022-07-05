@@ -1,0 +1,15 @@
+.app-content{
+    // margin-left:160px;
+    // padding:15px;
+    padding: 0px;
+    margin-left: 160px;
+}
+
+@media (max-width: 767px){
+.app-content {
+    // margin-top: 52px;
+    margin-top: 50px;
+    min-width: 100%;
+    margin-left: 0px;
+    }
+}

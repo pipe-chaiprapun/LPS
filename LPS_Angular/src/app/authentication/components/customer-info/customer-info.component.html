@@ -1,0 +1,260 @@
+<app-auth-content>
+   <!-------------------------------------- Customer Search Tile ---------------------------------->
+   <div class="zoom">
+      <a class="zoom-fab zoom-btn-large bg-danger text-white " [ngClass]="{'d-none':!customer}" id="back-btn"
+         (click)='back()' data-toggle="tooltip" data-placement="top" title="Back to customer search"><i
+            class="icon fa fa-arrow-circle-left fa-2x"></i></a>
+   </div>
+   <div id='customers'>
+      <div class="row" id='customer-table'>
+         <div class="col-md-12">
+            <div class="tile pt-3 mb-4">
+               <!-- Filter area -->
+               <div class='row align-items-end'>
+                  <div class='col-md-12'>
+                     <div class='accordion' id='accordion-customer-search'>
+                        <div class='card'>
+                           <h6 class='tile-title alert alert-success card-header hvr-underline-from-left'
+                              id="heading-search" data-toggle="collapse" data-target="#collapse-search"
+                              aria-expanded="true" aria-controls="collapse-search">Customer
+                              Search&nbsp;&nbsp;<i class="heading-indicator fa fa-angle-down fa-1x"></i></h6>
+                           <div id="collapse-search" class="collapse show" aria-labelledby="heading-search"
+                              data-parent="#accordion-customer-search">
+                              <div class='row'>
+                                 <form class='col-md-12'>
+                                    <div class='row'>
+                                       <div class='form-group col-sm-6 col-md-3 col-lg-2'>
+                                          <label class='control-label'>CIF</label>
+                                          <input type="text" id='txtCif' class="form-control form-control-sm" #txtCif
+                                             (keyup.enter)='search(txtCif.value, txtCustomerName.value, false)'>
+                                       </div>
+                                       <div class='form-group col-sm-6 col-md-6 col-lg-4'>
+                                          <label class='control-label'>Customer Name</label>
+                                          <input type='text' id='txtCustomerName' class='form-control form-control-sm'
+                                             #txtCustomerName
+                                             (keyup.enter)='search(txtCif.value, txtCustomerName.value, false)'>
+                                       </div>
+                                    </div>
+                                    <div class='row'>
+                                       <div class='form-group col-sm-6 col-md-3 col-lg-2'>
+                                          <label class='control-label'>Department</label>
+                                          <select class="form-control custom-select-sm" #selDept
+                                             [disabled]='department.length == 0' (change)="departmentChanged($event)">
+                                             <ng-container *ngIf='department.length > 0'>
+                                                <option *ngFor='let dept of displayDepartment'
+                                                   [selected]="dept.ROLE_CODE == currentSession.currentRole.ROLE_CODE">
+                                                   {{dept.ROLE_DESC}}</option>
+                                             </ng-container>
+                                          </select>
+                                       </div>
+                                       <div class='form-group col-sm-6 col-md-3 col-lg-2'>
+                                          <label class='control-label'>Sub Department</label>
+                                          <select class='form-control custom-select-sm' #selSubDept
+                                             [disabled]='subDepartment.length == 0'
+                                             (change)="subDepartmentChanged($event)">
+                                             <ng-container *ngIf='subDepartment.length > 0'>
+                                                <option *ngFor='let sub of displaySubDepartment'
+                                                   [selected]="sub.ROLE_CODE == currentSession.currentRole.ROLE_CODE">
+                                                   {{sub.ROLE_DESC}}</option>
+                                             </ng-container>
+                                          </select>
+                                       </div>
+                                       <div class='form-group col-sm-6 col-md-3 col-lg-2'>
+                                          <label class='control-label'>Unit</label>
+                                          <select class='form-control custom-select-sm' #selUnit
+                                             [disabled]='displayUnitLeader.length == 0'
+                                             (change)="UnitLeaderChanged($event)">
+                                             <ng-container *ngIf='displayUnitLeader.length > 0'>
+                                                <option *ngFor='let unit of displayUnitLeader'
+                                                   [selected]="unit.ROLE_CODE == currentSession.currentRole.ROLE_CODE">
+                                                   {{unit.ROLE_DESC}}</option>
+                                             </ng-container>
+                                          </select>
+                                       </div>
+                                       <div class='form-group col-sm-6 col-md-3 col-lg-2' *ngIf='displayUnit.length > 1'>
+                                          <label class='control-label'>RM</label>
+                                          <select class='form-control custom-select-sm' #selUnit
+                                             [disabled]='displayUnit.length == 0' (change)="unitChanged($event)">
+                                             <ng-container *ngIf='displayUnit.length > 0'>
+                                                <option *ngFor='let unit of displayUnit'
+                                                   [selected]="unit.ROLE_CODE == currentSession.currentRole.ROLE_CODE">
+                                                   {{unit.ROLE_DESC}}</option>
+                                             </ng-container>
+                                          </select>
+                                       </div>
+                                       <div class='form-group col-sm-12 col-md-4 search-btn'
+                                          style='margin-top:auto;width:80px;'>
+                                          <button type='button' class='btn btn-success btn-search btn-sm mr-2'
+                                             (click)='search(txtCif.value, txtCustomerName.value, false)'>
+                                             <i class="icon fa fa-search fa-1x text-white"></i>
+                                             Search
+                                          </button>
+                                          <button type='button' class='btn btn-danger btn-search btn-sm'
+                                             (click)='clearForm()' style='width:80px;' *ngIf='customerCount'>
+                                             <!-- *ngIf='customerCount' -->
+                                             <i class="icon fa fa-refresh fa-1x text-white"></i>
+                                             Clear
+                                          </button>
+                                       </div>
+                                    </div>
+                                 </form>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class='row'>
+                  <div class='col-md-8 col-sm-12 pb-2' style='margin-top:auto;'>
+                     <!-- <button type='button' class='btn btn-secondary btn-search btn-sm mr-2' *ngIf='customerCount'
+                        (click)="goToLink()">
+                        <i class="icon fa fa-table fa-1x text-white"></i> Report viewer
+                     </button>
+                     <button type='button' class='btn btn-info btn-search btn-sm mr-2' *ngIf='customerCount'
+                        (click)='customerInfoReport()'>
+                        <i class="icon fa fa-table fa-1x text-white"></i> Report viewer2
+                     </button> -->
+
+                     <!-- <button type='button' class='btn btn-info btn-search btn-sm mr-2' *ngIf='customerCount'
+                        (click)="downloadExcel()">
+                        <i class="icon fa fa-download fa-1x text-white"></i> Download Excel File
+                     </button>
+                     <button type='button' class='btn btn-secondary btn-search btn-sm mr-2' *ngIf='customerCount'
+                        (click)="downloadExcel2()">
+                        <i class="icon fa fa-print fa-1x text-white"></i> Print Table
+                     </button> -->
+                  </div>
+                  <div class='col-md-4' style='padding-right:30px;' *ngIf='customerCount'>
+                     <div class='row justify-content-end'>
+                        <span class="badge badge-pill badge-primary">{{customerCount | number : '1.0'}}
+                           entries</span>
+                     </div>
+                     <div class='row justify-content-end'>
+                        <pagination class='pagination-sm' [itemsPerPage]="itemsPerPage" [totalItems]="customerCount"
+                           [rotate]="false" [maxSize]="maxPageSize" (pageChanged)="pageCustomerChanged($event)"
+                           [boundaryLinks]="true">
+                        </pagination>
+                     </div>
+                  </div>
+               </div>
+               <!-- Display customers area -->
+               <div class="tile-body" id='customerTable' *ngIf='displayCustomers.length > 0'>
+                  <div class="table-responsive">
+                     <table class="table table-hover table-bordered table-striped table-loan" id="customerSearch">
+                        <thead class='text-center'>
+                           <tr>
+                              <th class='bg-white border-top-0 border-left-0 border-bottom-0'></th>
+                              <th (click)="sort('CIF_KEY')" rowspan="2" class='text-middle'>CIF<span class='sorting'><i
+                                       class="fa fa-sort"></i></span></th>
+                              <th (click)="sort('CUSTOMER_NAME')" rowspan="2" class='text-middle'>Customer Name<span
+                                    class='sorting'><i class="fa fa-sort"></i></span></th>
+                              <th (click)="sort('CREDIT_LIMIT')" rowspan="2" class='text-middle' style='width:100px;'>
+                                 Total<span class='sorting' style='margin-top:5px'><i
+                                       class="fa fa-sort"></i></span><br>Credit Limit</th>
+                              <th colspan="2">Outstanding</th>
+                              <th class='text-middle' rowspan="2" (click)="sort('YIELD')" style='width:60px;'>Yield<span
+                                    class='sorting'><i class="fa fa-sort"></i></span></th>
+                              <th class='text-middle' rowspan="2" (click)="sort('STAFF_NAME')">Staff Name<span
+                                    class='sorting'><i class="fa fa-sort"></i></span></th>
+                           </tr>
+                           <tr>
+                              <th class='bg-white border-top-0 border-left-0'></th>
+                              <th (click)="sort('OUTSTANDING_CASH')">Cash<span class='sorting'><i
+                                       class="fa fa-sort"></i></span>
+                              </th>
+                              <th (click)="sort('OUTSTANDING_NON_CASH')" style='width:90px;'>Non-cash<span
+                                    class='sorting'><i class="fa fa-sort"></i></span></th>
+                           </tr>
+                        </thead>
+                        <tbody class='text-right'>
+                           <tr *ngFor='let customer of displayCustomers; index as no'
+                              (click)='viewCustomerInfo(customer)'>
+                              <td>{{((currentCustomerPage-1)*itemsPerPage) + (no+1)}}</td>
+                              <td class='text-left'>{{customer.CIF_KEY}}</td>
+                              <td class='text-left'>{{customer.CUSTOMER_NAME}}</td>
+                              <td [ngClass]="{'text-danger': customer.CREDIT_LIMIT < 0}">
+                                 {{customer.CREDIT_LIMIT | number : '1.2-2'}}
+                              </td>
+                              <td [ngClass]="{'text-danger': customer.OUTSTANDING_CASH < 0}">
+                                 {{customer.OUTSTANDING_CASH | number : '1.2-2'}}
+                              </td>
+                              <td [ngClass]="{'text-danger': customer.OUTSTANDING_NON_CASH < 0}">
+                                 {{customer.OUTSTANDING_NON_CASH | number : '1.2-2'}}</td>
+                              <td [ngClass]="{'text-danger': customer.YIELD < 0}">{{customer.YIELD | number : '1.2-2'}}
+                              </td>
+                              <td class='text-left'>{{customer.STAFF_NAME}}
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!--------------------------------------- Customer Info Tile ------------------------------------>
+      <div class="row" id='customerInfo'>
+         <div class="col-md-12">
+            <div class="tile pb-1 mb-3 pt-2 px-2">
+               <!-- Customer info header -->
+               <div class='bd-callout bd-callout-primary'>
+                  <h6 class='tile-title'>Customer Info</h6>
+                  <form>
+                     <div class="row">
+                        <ng-container *ngIf='customer'>
+                           <div class="col-md-2 col-sm-3">
+                              <label class='control-label'>CIF</label>
+                              <input type="text" readonly class="form-control form-control-sm bg-white"
+                                 [value]="customer.CIF_KEY">
+                           </div>
+                           <div class="col-md-4 col-sm-6">
+                              <label class='control-label'>Customer</label>
+                              <input type="text" readonly class="form-control form-control-sm bg-white"
+                                 [value]="customer.CUSTOMER_NAME">
+                           </div>
+                        </ng-container>
+                     </div>
+                  </form>
+               </div>
+               <br>
+               <!-- Display customers area -->
+               <div class="tile-body">
+                  <!-- Customer Info tab list -->
+                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                     <li class="nav-item">
+                        <a class="nav-link active" id="customer-tab" data-toggle="tab" href="#customerTab" role="tab"
+                           aria-controls="customerTab" aria-selected="true">Customer Info</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" id="portfolioTab-tab" data-toggle="tab" href="#portfolioTab" role="tab"
+                           aria-controls="portfolioTab" aria-selected="false">Portfolio</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" id="account-tab" data-toggle="tab" href="#accountTab" role="tab"
+                           aria-controls="accountTab" aria-selected="false">Account / Service</a>
+                     </li>
+                  </ul>
+                  <!-- Tab Content -->
+                  <div class="tab-content" id="myTabContent">
+                     <!-- Customer info tab -->
+                     <div class="tab-pane fade show active" id="customerTab" role="tabpanel"
+                        aria-labelledby="home-tab">
+                        <app-personal-info></app-personal-info>
+                     </div>
+                     <!-- Portfolio tab -->
+                     <div class="tab-pane fade" id="portfolioTab" role="tabpanel" aria-labelledby="portfolio-tab">
+                        <app-portfolio></app-portfolio>
+                     </div>
+                     <!-- Account / Service tab -->
+                     <div class="tab-pane fade" id="accountTab" role="tabpanel" aria-labelledby="account-tab">
+                        <app-account-service></app-account-service>
+                     </div>
+                  </div>
+               </div>
+               <hr>
+            </div>
+         </div>
+      </div>
+   </div>
+</app-auth-content>

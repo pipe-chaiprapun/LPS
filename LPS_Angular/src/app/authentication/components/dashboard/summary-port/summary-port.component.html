@@ -1,0 +1,58 @@
+<div class='alert alert-dismissible alert-info mb-1' *ngIf='summary?.length < 1'>
+    <i class='fa fa-list-alt close'></i>
+    <h4 class='mb-1'>Not found</h4>
+    <h6>The system cannot find Summary port for this role!</h6>
+</div>
+<div id='summary-table' class='table-responsive' *ngIf='summary?.length > 0'>
+    <table class="table table-bordered table-striped table-loan table-hover" [ngClass]="{'expand-summary': expand}">
+        <thead>
+            <tr class="text-center">
+                <th rowspan="2" class='bg-white border-top-0 border-left-0'></th>
+                <th colspan="2">{{summary[0]?.INIT_ASDATE}}</th>
+                <th>Target</th>
+                <th colspan="2">{{summary[0]?.CURRENT_ASDATE}}</th>
+                <th>Variance from Target</th>
+                <th colspan="2">Variance {{summary[0]?.VARIANCE_DATE}}</th>
+                <th rowspan="2" class="text-middle">Avg Outstanding</th>
+            </tr>
+            <tr class="text-center">
+                <th>Credit Limit</th>
+                <th>Outstanding</th>
+                <th>Outstanding</th>
+                <th>Credit Limit</th>
+                <th>Outstanding</th>
+                <th>Outstanding</th>
+                <th>Credit Limit</th>
+                <th>Outstanding</th>
+            </tr>
+        </thead>
+        <tbody class="scrollable">
+            <tr class="text-right" *ngFor='let sum of summary'>
+                <td class="text-left">{{sum.ALL_PRODUCT_ALCO}}</td>
+                <td [ngClass]="{'text-danger': sum.INIT_TOTAL_LIMIT < 0}">{{sum.INIT_TOTAL_LIMIT | number : '1.2-2'}}</td>
+                <td [ngClass]="{'text-danger': sum.INIT_TOTAL_CBAL < 0}">{{sum.INIT_TOTAL_CBAL | number : '1.2-2'}}</td>
+                <td [ngClass]="{'text-danger': sum.TOTAL_TARGET < 0}">{{sum.TOTAL_TARGET | number : '1.2-2'}}</td>
+                <td [ngClass]="{'text-danger': sum.CURRENT_TOTAL_LIMIT < 0}">{{sum.CURRENT_TOTAL_LIMIT | number : '1.2-2'}}</td>
+                <td [ngClass]="{'text-danger': sum.CURRENT_TOTAL_CBAL < 0}">{{sum.CURRENT_TOTAL_CBAL | number : '1.2-2'}}</td>
+                <td [ngClass]="{'text-danger': sum.DIFF_TARGET < 0}">{{sum.DIFF_TARGET | number : '1.2-2'}}</td>
+                <td [ngClass]="{'text-danger': sum.DIFF_INIT_LIMIT < 0}">{{sum.DIFF_INIT_LIMIT | number : '1.2-2'}}</td>
+                <td [ngClass]="{'text-danger': sum.DIFF_INIT_CBAL < 0}">{{sum.DIFF_INIT_CBAL | number : '1.2-2'}}</td>
+                <td [ngClass]="{'text-danger': sum.AVG_OUTSTANDING < 0}">{{sum.AVG_OUTSTANDING | number : '1.2-2'}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr class="text-right text-bold">
+                <td class='text-center'>Total</td>
+                <td [ngClass]="{'text-danger': totalInitLimit < 0}">{{totalInitLimit | number : '1.2-2'}}</td>
+                <td [ngClass]="{'text-danger': totalInitCbal < 0}">{{totalInitCbal | number : '1.2-2'}}</td>
+                <td [ngClass]="{'text-danger': totalTarget < 0}">{{totalTarget | number : '1.2-2'}}</td>
+                <td [ngClass]="{'text-danger': totalCurrentLimit < 0}">{{totalCurrentLimit | number : '1.2-2'}}</td>
+                <td [ngClass]="{'text-danger': totalCurrentCbal < 0}">{{totalCurrentCbal | number : '1.2-2'}}</td>
+                <td [ngClass]="{'text-danger': totalDiffTarget < 0}">{{totalDiffTarget | number : '1.2-2'}}</td>
+                <td [ngClass]="{'text-danger': totalDiffInitLitmit < 0}">{{totalDiffInitLitmit | number : '1.2-2'}}</td>
+                <td [ngClass]="{'text-danger': totalDiffInitCbal < 0}">{{totalDiffInitCbal | number : '1.2-2'}}</td>
+                <td [ngClass]="{'text-danger': totalAvgOutstanding < 0}">{{totalAvgOutstanding | number : '1.2-2'}}</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

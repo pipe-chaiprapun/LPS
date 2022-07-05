@@ -1,0 +1,131 @@
+<!-- Filter area -->
+<div class='row align-items-end'>
+    <div class='col-md-12'>
+        <div class='row'>
+            <form class='col-md-12'>
+                <div class='row'>
+                    <div class='form-group col-md-2'>
+                        <label class='control-label'>Employee ID</label>
+                        <input type='text' id='txtEmployee' class='form-control form-control-sm' #txtEmployee
+                            (keyup.enter)='search(txtEmployee.value, txtRmName.value)'>
+                    </div>
+                    <div class='form-group col-md-2'>
+                        <label class='control-label'>RM Name</label>
+                        <input type='text' id='txtRmName' class='form-control form-control-sm' #txtRmName
+                            (keyup.enter)='search(txtEmployee.value, txtRmName.value)'>
+                    </div>
+                    <div class='form-group col-md-2'>
+                        <label class='control-label'>Role Status</label>
+                        <select id='select-role' class="form-control custom-select-sm" (change)="roleCheck($event)">
+                            <option value='A'>All</option>
+                            <option value="Y">Assigned</option>
+                            <option value="N">No role</option>
+                        </select>
+                    </div>
+                    <div class='form-group col-md-2'>
+                        <label class='control-label'>Account Status</label>
+                        <select id='select-status' class="form-control custom-select-sm" (change)="activeCheck($event)">
+                            <option value='%'>All</option>
+                            <option value="Y">Active</option>
+                            <option value="N">Disabled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='form-group col-md-2'>
+                        <label class='control-label'>Department</label>
+                        <select class="form-control custom-select-sm" #selDept [disabled]='department.length == 0'
+                            (change)="departmentChanged($event)">
+                            <option *ngFor='let dept of department'>
+                                {{dept.ROLE_DESC}}</option>
+                        </select>
+                    </div>
+                    <div class='form-group col-md-2'>
+                        <label class='control-label'>Sub Department</label>
+                        <select class='form-control custom-select-sm' #selSubDept [disabled]='subDepartment.length == 0'
+                            (change)="subDepartmentChanged($event)">
+                            <ng-container *ngIf='subDepartment.length > 0'>
+                                <option *ngFor='let sub of subDepartment'>
+                                    {{sub.ROLE_DESC}}</option>
+                            </ng-container>
+                        </select>
+                    </div>
+                    <div class='form-group col-md-2'>
+                        <label class='control-label'>Unit</label>
+                        <select class='form-control custom-select-sm' #selUnit [disabled]='unitLeader.length == 0'
+                            (change)="unitLeaderChanged($event)">
+                            <ng-container *ngIf='unitLeader.length > 0'>
+                                <option *ngFor='let unit of unitLeader'>
+                                    {{unit.ROLE_DESC}}</option>
+                            </ng-container>
+                        </select>
+                    </div>
+                    <div class='form-group col-md-3 search-btn' style='margin-top:auto;width:80px;'>
+                        <button type='button' class='btn btn-success btn-search btn-sm mr-2'
+                            (click)='search(txtEmployee.value, txtRmName.value)'>
+                            <i class="icon fa fa-search fa-1x text-white"></i>
+                            Search
+                        </button>
+                        <button type='button' class='btn btn-danger btn-search btn-sm' (click)='clearForm()'
+                            style='width: 80px;'>
+                            <i class="icon fa fa-refresh fa-1x text-white"></i>
+                            clear
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- </div> -->
+        <!-- </div> -->
+        <!-- </div> -->
+    </div>
+</div>
+<div class='row'>
+    <div class='col-md-8'></div>
+    <div class='col-md-4' style='padding-right:30px;' *ngIf='rmCount'>
+        <div class='row justify-content-end'>
+            <span class="badge badge-pill badge-primary">{{rmCount | number : '1.0'}}
+                entries</span>
+        </div>
+        <div class='row justify-content-end'>
+            <pagination class='pagination-sm' [itemsPerPage]="itemsPerPage" [totalItems]="rmCount" [rotate]="false"
+                [maxSize]="maxPageSize" (pageChanged)="pageRmChanged($event)" [boundaryLinks]="true">
+            </pagination>
+        </div>
+    </div>
+</div>
+<!-- display users area -->
+<div class="table-responsive" *ngIf='displayUsers.length > 0'>
+    <table class="table table-bordered table-striped table-loan" id="customerSearch">
+        <thead class='text-center'>
+            <tr>
+                <th class='bg-white border-top-0 border-left-0 border-bottom-0'></th>
+                <th (click)="sort('STAFF_NO')" class='text-middle'>Employee ID<span class='sorting'><i
+                            class="fa fa-sort"></i></span></th>
+                <th (click)="sort('STAFF_NAME')" class='text-middle'>Rm Name<span class='sorting'><i
+                            class="fa fa-sort"></i></span></th>
+                <th (click)="sort('ROLE_CODE')" class='text-middle'>Role<span class='sorting'><i
+                            class="fa fa-sort"></i></span></th>
+                <th (click)="sort('ACTIVE_FLAG')" class='text-middle'>Status<span class='sorting'><i
+                            class="fa fa-sort"></i></span></th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let user of displayUsers; index as no'>
+                <td class='text-right'>{{((currentUserPage-1)*itemsPerPage) + (no+1)}}</td>
+                <td>{{user.STAFF_NO}}</td>
+                <td>{{user.STAFF_NAME}}</td>
+                <td>{{user.ROLE_DESC}}</td>
+                <td>{{user.ACTIVE_FLAG}}</td>
+                <td class='text-center py-1'><button type='button' class='btn btn-success btn-view'
+                        (click)='viewRm(user)'>
+                        <i class="icon fa fa-pencil-square-o fa-1x text-white"></i>
+                        Edit
+                    </button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+

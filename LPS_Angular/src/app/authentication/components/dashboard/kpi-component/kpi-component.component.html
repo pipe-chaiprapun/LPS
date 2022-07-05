@@ -1,0 +1,39 @@
+<!-- <div class="overlay" *ngIf='!kpi'>
+    <div class="m-loader mr-4">
+        <svg class="m-circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="4" stroke-miterlimit="10" />
+        </svg>
+    </div>
+    <h3 class="l-text">Loading</h3>
+</div> -->
+<div class='alert alert-dismissible alert-info mb-1' *ngIf='kpi?.length < 1'>
+    <i class='fa fa-list-alt close'></i>
+    <h4 class='mb-1'>Not found</h4>
+    <h6>The system cannot find KPI for this role!</h6>
+</div>
+<!-- <chart [type]='typeChart' [data]='dataChart' [options]='optionsChart'></chart> -->
+<div id='kpi-table' class='table-responsive' *ngIf='kpi?.length > 0'>
+    <table class="table table-bordered table-striped table-hover table-loan" [ngClass]="{'expand-kpi': expand}">
+        <thead>
+            <tr class="text-center">
+                <th class='bg-white border-top-0 border-left-0'></th>
+                <th>Target</th>
+                <th style="white-space: nowrap;">Actual<br>(Jan to {{month}})</th>
+                <th>Diff</th>
+                <th style="white-space: nowrap;">% Acheivement<br>(Year)</th>
+                <th style="white-space: nowrap;">Actual<br>in {{date}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="text-right" *ngFor='let kpi of kpi'>
+                <td class="text-left">{{kpi.TOPIC}}</td>
+                <td [ngClass]="{'text-danger': kpi.LOAN_TARGET < 0}">{{kpi.LOAN_TARGET | number : '1.2-2'}}</td>
+                <td [ngClass]="{'text-danger': kpi.YTD < 0}">{{kpi.YTD | number : '1.2-2'}}</td>
+                <td [ngClass]="{'text-danger': kpi.DIFF < 0}">{{kpi.DIFF | number : '1.2-2'}}</td>
+                <td *ngIf='kpi.LOAN_TARGET > 0'>{{(kpi.ACTUAL*100)/kpi.LOAN_TARGET | number : '1.2-2'}}</td>
+                <td *ngIf='kpi.LOAN_TARGET === 0'>0</td>
+                <td [ngClass]="{'text-danger': kpi.ACTUAL < 0}">{{kpi.ACTUAL | number : '1.2-2'}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

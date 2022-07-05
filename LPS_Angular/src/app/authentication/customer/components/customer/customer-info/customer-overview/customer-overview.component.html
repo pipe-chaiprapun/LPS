@@ -1,0 +1,767 @@
+<!-- <div class="overlay" *ngIf='!viewCustomer'>
+    <div class="m-loader mr-4">
+        <svg class="m-circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="4" stroke-miterlimit="10" />
+        </svg>
+    </div>
+    <h3 class="l-text">Loading</h3>
+</div> -->
+<ng-container *ngIf='viewCustomer'>
+  <div class='row'>
+    <div class='col-sm-12 col-md-8'>
+      <div class='row form-line align-items-end '>
+        <div class='form-group col-sm-6 col-md-3'>
+          <label class='control-label'>Register Date</label>
+          <input type="text" readonly class="form-control text-left form-control-sm"
+            [value]="viewCustomer.REGISTER_DATE ? convertDate(viewCustomer.REGISTER_DATE) : ''">
+        </div>
+        <div class='form-group col-sm-6 col-md-3'>
+          <label class='control-label text-info'>Register No.</label>
+          <input type="text" readonly class="form-control text-left form-control-sm"
+            [value]="viewCustomer.REGISTRATION_NO">
+        </div>
+      </div>
+      <div class='row form-line'>
+        <div class='form-group col-sm-6 col-md-3'>
+          <label class='control-label'>No. of Staff</label>
+          <input type='text' readonly class='form-control text-right form-control-sm'
+            [value]='viewCustomer.NO_OF_STAFF | number : "1.0"'>
+        </div>
+        <div class='form-group col-sm-6 col-md-3'>
+          <label class='control-label'>Net Asset</label>
+          <input type='text' readonly class='form-control text-right form-control-sm'
+            [value]='viewCustomer.NET_ASSET | number : "1.2-2"'>
+        </div>
+        <div class='form-group col-sm-6 col-md-3'>
+          <label class='control-label'>Net Profit</label>
+          <input type='text' readonly class='form-control text-right form-control-sm'
+            [value]='viewCustomer.NET_PROFIT | number : "1.2-2"'>
+        </div>
+      </div>
+      <div class='row form-line align-items-end'>
+        <div class='form-group col-sm-6 col-md-3'>
+          <label class='control-label'>Business Size</label>
+          <input type='text' readonly class='form-control form-control-sm text-left'
+            [value]='viewCustomer.BUSINESS_SIZE'>
+        </div>
+        <div class='form-group col-sm-6 col-md-3'>
+          <label class='control-label'>Classification</label>
+          <input type='text' readonly class='form-control form-control-sm text-center'
+            [value]='viewCustomer.CLASSIFICATION'>
+        </div>
+        <div class='form-group col-sm-6 col-md-3'>
+          <label class='control-label'>Total Provision</label>
+          <input type='text' readonly class='form-control form-control-sm text-right'
+            [value]='viewCustomer.TOTAL_PROVISION | number : "1.2-2"'>
+        </div>
+        <div class='form-group col-sm-6 col-md-2'>
+          <label class='control-label text-danger text-left' style='width:180px;vertical-align: super;'>* ข้อมูล ณ
+            วันที่ {{viewCustomer.PARAM_VALUE}}</label>
+        </div>
+      </div>
+      <div class='row form-line align-items-end'>
+        <div class='form-group col-sm-6 col-md-3'>
+          <!-- <label class='control-label text-info'>Watch List</label>
+          <input type='text' readonly class='form-control form-control-sm text-center'
+            [value]="viewCustomer.WATCHLIST_FLAG"> -->
+          <label class='control-label text-info'>Watch List</label>
+          <div class="input-group input-group-sm">
+            <input type="text" readonly class="form-control text-center" [value]="viewCustomer.WATCHLIST_FLAG">
+            <div class="input-group-append">
+              <a href="javascript:;" data-toggle="modal" data-target='#watchListModal'
+                *ngIf="viewCustomer.WATCHLIST_FLAG === 'Y'">
+                <span class="input-group-text alert-primary form-control-sm" style='font-size: 14px;cursor: pointer;'><i
+                    class="fa fa-eye mr-1" aria-hidden="true"></i>View</span></a>
+              <span *ngIf="viewCustomer.WATCHLIST_FLAG === 'N'" class="input-group-text alert-primary"
+                style='font-size: 14px;cursor:not-allowed'><i class="fa fa-eye mr-1" aria-hidden="true"></i>View</span>
+            </div>
+          </div>
+        </div>
+        <div class='form-group col-sm-6 col-md-3'>
+          <!-- <label class='control-label text-info'>Reschedule</label>
+          <input type='text' readonly class='form-control form-control-sm text-center'
+            [value]="viewCustomer.RESCHEDULE_FLAG"> -->
+          <!-- <label class='control-label text-info'>Reschedule</label>
+          <div class="input-group input-group-sm">
+            <input type="text" readonly class="form-control text-center" [value]='viewCustomer.RESCHEDULE_FLAG'>
+            <div class="input-group-append">
+              <a href="javascript:;" *ngIf="viewCustomer.RESCHEDULE_FLAG === 'Y'">
+                <span class="input-group-text alert-primary form-control-sm" style='font-size: 14px;cursor: pointer;'><i
+                    class="fa fa-eye mr-1" aria-hidden="true"></i>View</span>
+              </a>
+              <span *ngIf="viewCustomer.RESCHEDULE_FLAG === 'N'" class="input-group-text alert-primary"
+                style='font-size: 14px;cursor:not-allowed'><i class="fa fa-eye mr-1" aria-hidden="true"></i>View</span>
+            </div>
+          </div> -->
+
+          <label class='control-label text-info'>TDR</label>
+          <div class="input-group input-group-sm">
+            <input type="text" readonly class="form-control text-center" [value]='viewCustomer.TDR_FLAG'>
+            <div class="input-group-append">
+              <a href="javascript:;" *ngIf="viewCustomer.TDR_FLAG === 'Y'" data-toggle="modal" data-target="#tdrModal">
+                <span class="input-group-text alert-primary form-control-sm" style='font-size: 14px;cursor: pointer;'><i
+                    class="fa fa-eye mr-1" aria-hidden="true"></i>View</span>
+              </a>
+              <span *ngIf="viewCustomer.TDR_FLAG === 'N'" class="input-group-text alert-primary"
+                style='font-size: 14px;cursor:not-allowed'><i class="fa fa-eye mr-1" aria-hidden="true"></i>View</span>
+            </div>
+          </div>
+        </div>
+        <div class='form-group col-sm-6 col-md-6'>
+          <!-- <label class='control-label text-info'>TDR</label>
+          <input type='text' readonly class='form-control form-control-sm text-center' [value]="viewCustomer.TDR_FLAG"> -->
+
+          <div class='row'>
+            <div class='col-sm-6 col-md-6'>
+              <!-- <label class='control-label text-info'>DR</label>
+              <input type='text' readonly class='form-control form-control-sm text-center' [value]="viewCustomer.TDR_FLAG"> -->
+              <label class='control-label text-info'>DR</label>
+              <div class="input-group input-group-sm">
+                <input type="text" readonly class="form-control text-center" [value]='viewCustomer.DR_FLAG'>
+                <div class="input-group-append">
+                  <a href="javascript:;" *ngIf="viewCustomer.DR_FLAG === 'Y'" data-toggle="modal"
+                    data-target="#drModal">
+                    <span class="input-group-text alert-primary form-control-sm"
+                      style='font-size: 14px;cursor: pointer;padding-left:5px;padding-right:5px;'><i
+                        class="fa fa-eye mr-1" aria-hidden="true"></i>View</span>
+                  </a>
+                  <span *ngIf="viewCustomer.DR_FLAG === 'N'" class="input-group-text alert-primary"
+                    style='font-size: 14px;cursor:not-allowed'><i class="fa fa-eye mr-1"
+                      aria-hidden="true"></i>View</span>
+                </div>
+              </div>
+            </div>
+            <div class='col-sm-6 col-md-6'>
+              <!-- <label class='control-label text-info'>NDR</label>
+              <input type='text' readonly class='form-control form-control-sm text-center' value="N"> -->
+              <label class='control-label text-info'>NDR</label>
+              <div class="input-group input-group-sm">
+                <input type="text" readonly class="form-control text-center" [value]='viewCustomer.NDR_FLAG'>
+                <div class="input-group-append">
+                  <a href="javascript:;" *ngIf="viewCustomer.NDR_FLAG === 'Y'" data-toggle="modal"
+                    data-target="#ndrModal">
+                    <span class="input-group-text alert-primary form-control-sm"
+                      style='font-size: 14px;cursor: pointer;padding-left:5px;padding-right:5px;'><i
+                        class="fa fa-eye mr-1" aria-hidden="true"></i>View</span>
+                  </a>
+                  <span *ngIf="viewCustomer.NDR_FLAG === 'N'" class="input-group-text alert-primary"
+                    style='font-size: 14px;cursor:not-allowed'><i class="fa fa-eye mr-1"
+                      aria-hidden="true"></i>View</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class='form-group col-sm-6 col-md-3'>
+          <button type='button' class='btn btn-info btn-sm' style='vertical-align: text-bottom;width:138px'
+            data-toggle="modal" data-target="#customerGroupModal" *ngIf='customerInfo.customerGroup.length > 0'>
+            <i class="icon fa fa-users fa-1x text-white"></i>&nbsp;Customer
+            Group</button>
+        </div> -->
+      </div>
+      <div class='row form-line align-items-end'>
+        <div class='form-group col-sm-12 col-md-9'>
+          <label class="control-label">Address</label>
+          <textarea class="form-control form-control-sm'" readonly rows='1'
+            style='padding:0.25rem 0.75rem;'>{{viewCustomer.CUSTOMER_ADDRESS}}</textarea>
+        </div>
+        <div class='form-group col-sm-6 col-md-3'>
+          <label class='control-label'>Fax</label>
+          <input type='text' readonly class='form-control form-control-sm' [value]='viewCustomer.FAX'>
+        </div>
+        <div class='form-group col-sm-6 col-md-3 py-1'>
+          <!-- <button type='button' class='btn btn-info btn-sm' style='vertical-align: text-bottom;width:138px'
+            data-toggle="modal" data-target="#customerGroupModal" *ngIf='customerInfo.customerGroup.length > 0'>
+            <i class="icon fa fa-users fa-1x text-white"></i>&nbsp;Customer
+            Group</button> -->
+          <button type='button' class='btn btn-info btn-sm w-100' style='vertical-align: text-bottom;font-size: 0.8rem;'
+            data-toggle="modal" data-target="#customerGroupModal" *ngIf='customerInfo.customerGroup.length > 0'>
+            <i class="icon fa fa-users fa-1x text-white"></i>&nbsp;Customer
+            Group</button>
+        </div>
+        <div class='form-group col-sm-6 col-md-3 py-1'>
+          <!-- <button type='button' class='btn btn-success btn-sm' data-toggle='modal' data-target='#creditRatingModel'
+            style='vertical-align: text-bottom;width:138px' *ngIf='customerInfo.creditRating.length > 0'>
+            <i class="icon fa fa-star-half-o fa-1x text-white"></i>&nbsp;Credit
+            Rating / Scoring</button> -->
+          <button type='button' class='btn btn-success btn-sm w-100' data-toggle='modal'
+            data-target='#creditRatingModel' style='vertical-align: text-bottom;font-size: 0.8rem;'
+            *ngIf='customerInfo.creditRating.length > 0'>
+            <i class="icon fa fa-star-half-o fa-1x text-white"></i>&nbsp;Credit
+            Rating / Scoring</button>
+        </div>
+      </div>
+      <!-- <div class='row form-line align-items-end'>
+        <div class='form-group col-sm-12 col-md-6'>
+          <label class="control-label text-info">Contact Info</label>
+          <div class='table-responsive'>
+            <table class="table table-bordered table-striped table-loan mb-0">
+              <thead class='text-center'>
+                <tr>
+                  <th scope="col" class='bg-white bg-white border-top-0 border-left-0'></th>
+                  <th scope="col">Contact Person</th>
+                  <th scope="col">Phone Number</th>
+                </tr>
+              </thead>
+              <tbody class='text-left'>
+                <tr>
+                  <td class='text-right'>1</td>
+                  <td>John</td>
+                  <td>069-756-3265</td>
+                </tr>
+                <tr>
+                  <td class='text-right'>2</td>
+                  <td>Murphy</td>
+                  <td>045-985-6523</td>
+                </tr>
+                <tr>
+                  <td class='text-right'>3</td>
+                  <td>Smith</td>
+                  <td>036-456-1129</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class='col-md-6'>
+          <ng-container *ngIf='customerInfo'>
+            <button type='button' class='btn btn-info btn-sm' style='margin-right:10px;margin-bottom:0.5rem;'
+              data-toggle="modal" data-target="#customerGroupModal" *ngIf='customerInfo.customerGroup.length > 0'>
+              <i class="icon fa fa-users fa-1x text-white"></i>&nbsp;Customer
+              Group</button>
+            <button type='button' class='btn btn-success btn-sm' data-toggle='modal' data-target='#creditRatingModel'
+              style='margin-bottom:0.5rem;' *ngIf='customerInfo.creditRating.length > 0'>
+              <i class="icon fa fa-star-half-o fa-1x text-white"></i>&nbsp;Credit
+              Rating / Scoring</button>
+          </ng-container>
+        </div>
+      </div> -->
+    </div>
+    <div class='col-sm-12 col-md-4'>
+      <div class='form-group'>
+        <label class="control-label text-info">Contact Info</label>
+        <br>
+        <div class='table-responsive' *ngIf='customerInfo.contactInfo && customerInfo.contactInfo.length > 0'>
+          <table class="table table-bordered table-striped table-loan mb-0">
+            <thead class='text-center'>
+              <tr>
+                <th scope="col" class='bg-white bg-white border-top-0 border-left-0'></th>
+                <th scope="col">Contact Person</th>
+                <th scope="col">Phone Number</th>
+              </tr>
+            </thead>
+            <tbody class='text-left'>
+              <tr *ngFor='let contact of customerInfo.contactInfo;index as no'>
+                <td class='text-right'>{{no+1}}</td>
+                <td>{{contact.CONTACT_NAME}}</td>
+                <td>{{contact.CONTACT_TEL}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class='alert alert-dismissible alert-info mb-1' *ngIf='!customerInfo.contactInfo || customerInfo.contactInfo.length < 1'>
+          <i class='fa fa-list-alt close'></i>
+          <h4 class='mb-1'>Not found</h4>
+          <h6>This customer has no contact info.</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class='row form-line'>
+        <div class='form-group col-md-8 col-sm-12'>
+            <label class="control-label">Address</label>
+            <textarea class="form-control" readonly rows='1'>{{viewCustomer.CUSTOMER_ADDRESS}}</textarea>
+        </div>
+    </div>
+    <div class='row form-line'>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class="control-label">Telephone</label>
+            <input type="text" readonly class="form-control form-control-sm" [value]="viewCustomer.TELEPHONE">
+        </div>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>Fax</label>
+            <input type='text' readonly class='form-control form-control-sm' [value]='viewCustomer.FAX'>
+        </div>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>No. of Staff</label>
+            <input type='text' readonly class='form-control text-right form-control-sm'
+                [value]='viewCustomer.NO_OF_STAFF'>
+        </div>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>Net Asset</label>
+            <input type='text' readonly class='form-control text-right form-control-sm'
+                [value]='viewCustomer.NET_ASSET | number : "1.2-2"'>
+        </div>
+    </div>
+    <div class='row form-line align-items-end'>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>Net Profit</label>
+            <input type='text' readonly class='form-control text-right form-control-sm'
+                [value]='viewCustomer.NET_PROFIT | number : "1.2-2"'>
+        </div>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>Business Size</label>
+            <input type='text' readonly class='form-control form-control-sm text-left'
+                [value]='viewCustomer.BUSINESS_SIZE'>
+        </div>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>Classification</label>
+            <input type='text' readonly class='form-control form-control-sm text-center'
+                [value]='viewCustomer.CLASSIFICATION'>
+        </div>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>Total Provision</label>
+            <input type='text' readonly class='form-control form-control-sm text-right'
+                [value]='viewCustomer.TOTAL_PROVISION | number : "1.2-2"'>
+        </div>
+        <div class='form-group col-md-2 px-0'>
+            <label class='control-label text-danger text-left' style='width:180px;vertical-align: super;'>* ข้อมูล ณ
+                วันที่ {{viewCustomer.PARAM_VALUE}}</label>
+        </div>
+    </div>
+    <div class='row form-line align-items-end'>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>Watch List</label>
+            <input type='text' readonly class='form-control form-control-sm text-center'
+                [value]="viewCustomer.WATCHLIST_FLAG">
+        </div>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>Reschedule</label>
+            <input type='text' readonly class='form-control form-control-sm text-center'
+                [value]="viewCustomer.RESCHEDULE_FLAG">
+        </div>
+        <div class='form-group col-md-2 col-sm-6'>
+            <label class='control-label'>TDR</label>
+            <input type='text' readonly class='form-control form-control-sm text-center'
+                [value]="viewCustomer.TDR_FLAG">
+        </div>
+        <div class='col-md-6'>
+            <ng-container *ngIf='customerInfo'>
+                <button type='button' class='btn btn-info btn-sm' style='margin-right:10px;margin-bottom:0.5rem;'
+                    data-toggle="modal" data-target="#customerGroupModal" *ngIf='customerInfo.customerGroup.length > 0'>
+                    <i class="icon fa fa-users fa-1x text-white"></i>&nbsp;Customer
+                    Group</button>
+                <button type='button' class='btn btn-success btn-sm' data-toggle='modal'
+                    data-target='#creditRatingModel' style='margin-bottom:0.5rem;'
+                    *ngIf='customerInfo.creditRating.length > 0'>
+                    <i class="icon fa fa-star-half-o fa-1x text-white"></i>&nbsp;Credit
+                    Rating / Scoring</button>
+            </ng-container>
+        </div>
+    </div> -->
+</ng-container>
+
+<!-- Customer group modal -->
+<div class="modal fade" id="customerGroupModal" tabindex="-1" role="dialog" aria-labelledby="customerGroupLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header alert-info">
+        <h5 class="modal-title" id="customerGroupLabel">Customer Group
+          {{currentCustomerGroup}}/{{customerGroupCount}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <carousel [showIndicators]="false" [interval]="false" [(activeSlide)]="currentIndex" [startFromIndex]="0"
+        (activeSlideChange)="onslideChanged($event)">
+        <ng-container *ngIf='customerInfo'>
+          <slide *ngFor='let group of customerInfo.customerGroup; index as no'>
+            <div class="modal-body" style='padding: 1rem 5rem;'>
+              <form>
+                <div class="row">
+                  <div class="col-md-3 col-sm-3">
+                    <form class='form-inline'>
+                      <div class='form-group w-100'>
+                        <label class='control-label' style='margin-right:10px;'>Group
+                          No</label>
+                        <input type='text' readonly class='form-control form-control-sm text-right w-50'
+                          [value]="group.groupNo">
+                      </div>
+                    </form>
+                  </div>
+                  <div class="col-md-9 col-sm-9">
+                    <form class='form-inline'>
+                      <div class='form-group w-100'>
+                        <label class='control-label' style='margin-right:10px;'>Group
+                          Name</label>
+                        <input type='text' readonly class='form-control w-50 form-control-sm' [value]='group.groupName'>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </form>
+              <br>
+              <div class='table-responsive' *ngIf='viewCustomer'>
+                <table class="table table-bordered table-group">
+                  <thead class='text-center'>
+                    <tr>
+                      <th scope="col" class='bg-white border-top-0 border-left-0'></th>
+                      <th scope="col">CIF</th>
+                      <th scope="col">Customer Name</th>
+                      <th scope="col">Relation</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- <tr *ngFor='let data of group.data; index as no'
+                                            [ngClass]="{'current-customer':viewCustomer.CIF_KEY == data.CIF_KEY}"> -->
+                    <tr *ngFor='let data of group.data; index as no'
+                      [ngClass]="{'alert-success':viewCustomer.CIF_KEY == data.CIF_KEY}">
+                      <td class='text-right'>{{no+1}}</td>
+                      <td>{{data.CIF_KEY}}</td>
+                      <td>{{data.CUSTOMER_NAME}}</td>
+                      <td>{{data.CUSTOMER_GROUP_RELATION}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </slide>
+        </ng-container>
+      </carousel>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Credit rating modal -->
+<div class="modal fade" id="creditRatingModel" tabindex="-1" role="dialog" aria-labelledby="creditRatingLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header alert-success">
+        <h5 class="modal-title" id="creditRatingLabel">Credit Rating / Scoring</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <br>
+        <table class="table table-bordered table-striped table-loan">
+          <thead class='text-center'>
+            <tr>
+              <th scope="col">Type Rating</th>
+              <th scope="col">Rating Company</th>
+              <th scope="col">Rating</th>
+              <th scope="col">Rating Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf='customerInfo'>
+              <tr *ngFor='let rating of customerInfo.creditRating'>
+                <td>{{rating.RATING_TYPE}}</td>
+                <td>{{rating.RATING_COMPANY}}</td>
+                <td>{{rating.RATING}}</td>
+                <td>{{rating.RATING_DATE ? convertDate(rating.RATING_DATE) : ''}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Watch List Modal -->
+<div class="modal fade" id="watchListModal" tabindex="-1" role="dialog" aria-labelledby="watchListLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header alert-info">
+        <h5 class="modal-title" id="watchListLabel">Watch List History</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class='modal-body'>
+        <br>
+        <table class="table table-bordered table-striped table-loan" *ngIf='customerInfo'>
+          <thead class='text-center'>
+            <tr>
+              <th scope="col">Watch List Flag</th>
+              <th scope="col">Note</th>
+              <th scope="col">Create Date</th>
+              <th scope="col">Maurity Date</th>
+            </tr>
+          </thead>
+          <tbody class='text-left'>
+            <tr *ngFor='let watchlist of customerInfo.watchlist'>
+              <td class='text-center'>{{watchlist.WATCH_LIST_FLAG}}</td>
+              <td>{{watchlist.WATCH_LIST_NOTE}}</td>
+              <td>{{watchlist.CREATE_DATE ? convertDate(watchlist.CREATE_DATE) : ''}}</td>
+              <td>{{watchlist.MATURITY_DATE ? convertDate(watchlist.MATURITY_DATE) : ''}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TDR Modal -->
+<div class="modal fade" id="tdrModal" tabindex="-1" role="dialog" aria-labelledby="tdrLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header alert-info">
+        <h5 class="modal-title" id="tdrLabel">TDR History</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class='modal-body' *ngIf='viewCustomer'>
+        <div class='row'>
+          <div class='form-group col-sm-3 col-md-2'>
+            <label class='control-label'>No. of TDR Acct</label>
+            <input type='text' readonly class='form-control text-right form-control-sm' value='2'>
+          </div>
+          <div class='form-group col-sm-3 col-md-2'>
+            <label class='control-label'>No. of TDR Times</label>
+            <input type='text' readonly class='form-control text-right form-control-sm' value='3'>
+          </div>
+          <div class='form-group col-sm-3 col-md-2'>
+            <label class='control-label'>First TDR Date</label>
+            <input type='text' readonly class='form-control form-control-sm' value='28/08/2018'>
+          </div>
+          <div class='form-group col-sm-3 col-md-2'>
+            <label class='control-label'>Last TDR Date</label>
+            <input type='text' readonly class='form-control form-control-sm' value='30/07/2020'>
+          </div>
+        </div>
+        <br>
+        <div class='row'>
+          <div class='col-12'>
+            <div class='table-responsive' style='overflow-x: hidden;'>
+              <table class="table table-loan table-bordered table-hover">
+                <thead class='text-center cursor-pointer'>
+                  <tr>
+                    <th scope="col" class='bg-white border-top-0 border-left-0'></th>
+                    <th scope="col">ACCTNO</th>
+                    <th scope="col">TDR TIME</th>
+                    <th scope="col">ACNAME</th>
+                    <th scope="col">Account Open Date</th>
+                    <th scope="col">Outstanding</th>
+                    <th scope="col" class='bg-white border-top-0 border-right-0 border-bottom-0'></th>
+                  </tr>
+                </thead>
+                <tbody class='text-left'>
+                  <tr (click)="acc1Ex = !acc1Ex" class='cursor-pointer' style="background-color:mintcream;">
+                    <td class='text-right'>
+                      <i *ngIf='!acc1Ex' class="fa fa-plus-square text-primary mr-2"></i>
+                      <i *ngIf='acc1Ex' class="fa fa-minus-square text-danger mr-2"></i>
+                      1
+                    </td>
+                    <td>AL48003747000008449</td>
+                    <td class='text-right'>2</td>
+                    <td>ACCT-{{viewCustomer.CIF_KEY}}</td>
+                    <td>29/07/2020</td>
+                    <td class='text-right'>467,000,000.00</td>
+                  </tr>
+                  <ng-container *ngIf='acc1Ex'>
+                    <tr class='text-center'>
+                      <th class='border-right-0 border-bottom-0 border-left-0'></th>
+                      <!-- <th class='border-right-0 border-left-0 border-bottom-0'></th> -->
+                      <th scope="col">ACCTNO</th>
+                      <th scope="col">TDR TIME</th>
+                      <th scope="col">ACNAME</th>
+                      <th scope="col">Account Open Date</th>
+                      <th scope="col">Outstanding</th>
+                    </tr>
+                    <tr class='text-left bg-white'>
+                      <td class='border-right-0 border-bottom-0 border-top-0 border-left-0'></td>
+                      <!-- <td class='border-right-0 border-left-0 border-bottom-0 border-top-0'></td> -->
+                      <td>AL48003747000008450</td>
+                      <td class='text-right'>1</td>
+                      <td>ACCT-{{viewCustomer.CIF_KEY}}</td>
+                      <td>28/08/2018</td>
+                      <td class='text-right'>967,000,000.00</td>
+                    </tr>
+                    <tr class='text-left'>
+                      <td class='border-right-0 border-top-0 border-left-0'></td>
+                      <!-- <td class='border-right-0 border-left-0 border-top-0'></td> -->
+                      <td>AL48003747000008451</td>
+                      <td class='text-right'></td>
+                      <td>ACCT-{{viewCustomer.CIF_KEY}}</td>
+                      <td>25/02/2015</td>
+                      <td class='text-right'>967,000,000.00</td>
+                    </tr>
+                  </ng-container>
+                  <tr (click)="acc2Ex = !acc2Ex" class='cursor-pointer' style="background-color:mintcream;">
+                    <td class='text-right'>
+                      <i *ngIf='!acc2Ex' class="fa fa-plus-square text-primary mr-2"></i>
+                      <i *ngIf='acc2Ex' class="fa fa-minus-square text-danger mr-2"></i>
+                      2
+                    </td>
+                    <td>AL48003747000009449</td>
+                    <td class='text-right'>3</td>
+                    <td>ACCT-{{viewCustomer.CIF_KEY}}</td>
+                    <td>30/07/2020</td>
+                    <td class='text-right'>10,000,000.00</td>
+                  </tr>
+                  <ng-container *ngIf='acc2Ex'>
+                    <tr class='text-center bg-white'>
+                      <th class='border-right-0 border-bottom-0 border-left-0'></th>
+                      <!-- <th class='border-right-0 border-left-0 border-bottom-0'></th> -->
+                      <th scope="col">ACCTNO</th>
+                      <th scope="col">TDR TIME</th>
+                      <th scope="col">ACNAME</th>
+                      <th scope="col">Account Open Date</th>
+                      <th scope="col">Outstanding</th>
+                    </tr>
+                    <tr class='text-left bg-white'>
+                      <td class='border-right-0 border-top-0 border-left-0 border-bottom-0'></td>
+                      <!-- <td class='border-right-0 border-left-0 border-top-0 border-bottom-0'></td> -->
+                      <td>AL48003747000008451</td>
+                      <td></td>
+                      <td>ACCT-{{viewCustomer.CIF_KEY}}</td>
+                      <td>25/02/2015</td>
+                      <td class='text-right'>10,000,000.00</td>
+                    </tr>
+                  </ng-container>
+
+                  <!-- <ng-container *ngFor='let c of collaterals'>
+                      <tr class='cursor-pointer' (click)="c.expanded = !c.expanded" style='background-color:mintcream;'>
+                        <td style='width:80px;'>
+                          <i *ngIf="c.DETAIL_FLAG=='Y' && !c.expanded" class="fa fa-plus-square text-primary mr-1"></i>
+                          <i *ngIf="c.DETAIL_FLAG=='Y' && c.expanded" class="fa fa-minus-square text-danger mr-1"></i>
+                          <span [ngClass]="{'pl-3': c.DETAIL_FLAG=='N'}">{{c.CCDCID}}</span>
+                        </td>
+                        <td>{{c.CCDNAM}}</td>
+                        <td>{{c.CCDDSC}}</td>
+                        <td>{{c.COLLATERAL_CAT}}</td>
+                        <td>{{c.VALUATION_DATE}}</td>
+                        <td>{{c.NEXT_VALUATION_DATE}}</td>
+                        <td class='text-right'>{{c.CCDCMV | number : "1.2-2"}}</td>
+                      </tr>
+                      <ng-container *ngIf="c.expanded">
+                        <tr class='bg-white' *ngFor="let d of c.COLLATERAL_DETAILS">
+                          <td class='border-0'></td>
+                          <td class='border-0'><i class="fa fa-bookmark mr-1"></i>{{d.DISPLAY_NAME}}
+                          </td>
+                          <td colspan="3" class='border-0'>
+                            {{d.PARAM_VALUE == '' ? '-' : d.NUMBER_FORMAT_FLAG == 'Y' ? (d.PARAM_VALUE | number :
+                            '1.2-2') : d.PARAM_VALUE}}
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </ng-container> -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="drModal" tabindex="-1" role="dialog" aria-labelledby="drLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header alert-info">
+        <h5 class="modal-title" id="drLabel">DR History</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class='modal-body'>
+        <br>
+        <table class="table table-bordered table-striped table-loan">
+          <thead class='text-center'>
+            <tr>
+            <tr>
+              <th scope="col">ACCTNO</th>
+              <th scope="col">ACCTNAME</th>
+              <th scope="col">Account Open Date</th>
+              <th scope="col">Outstanding</th>
+            </tr>
+          </thead>
+          <tbody class='text-left'>
+            <tr>
+              <td>48003747000008450</td>
+              <td>ACCT48003747000008450</td>
+              <td>20/08/2020</td>
+              <td class='text-right'>967,000,000.00</td>
+            </tr>
+            <tr>
+              <td>48003747000008450</td>
+              <td>AL48003747000008451</td>
+              <td>20/08/2020</td>
+              <td class='text-right'>467,000,000.00</td>
+            </tr>
+            <tr>
+              <td>48003747000008450</td>
+              <td>ACCT48003747000008452</td>
+              <td>20/08/2020</td>
+              <td class='text-right'>10,000,000.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="ndrModal" tabindex="-1" role="dialog" aria-labelledby="ndrLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header alert-info">
+        <h5 class="modal-title" id="ndrLabel">NDR History</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class='modal-body'>
+        <br>
+        <table class="table table-bordered table-striped table-loan">
+          <thead class='text-center'>
+            <tr>
+            <tr>
+              <th scope="col">ACCTNO</th>
+              <th scope="col">ACCTNAME</th>
+              <th scope="col">Account Open Date</th>
+              <th scope="col">Outstanding</th>
+            </tr>
+          </thead>
+          <tbody class='text-left'>
+            <tr>
+              <td>48003747000008450</td>
+              <td>ACCT48003747000008450</td>
+              <td>20/08/2020</td>
+              <td class='text-right'>967,000,000.00</td>
+            </tr>
+            <tr>
+              <td>48003747000008450</td>
+              <td>AL48003747000008451</td>
+              <td>20/08/2020</td>
+              <td class='text-right'>467,000,000.00</td>
+            </tr>
+            <tr>
+              <td>48003747000008450</td>
+              <td>ACCT48003747000008452</td>
+              <td>20/08/2020</td>
+              <td class='text-right'>10,000,000.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
