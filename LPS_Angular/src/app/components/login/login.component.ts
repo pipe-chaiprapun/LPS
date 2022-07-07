@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit {
                   if (this.auth.getUserRoleType(department.ROLE_CODE) === RoleType.Rm) {
                     this.router.navigate([`/${this.AppUrl.Authen}/${this.AuthUrl.Dashboard}`]);
                   } else if (this.auth.getUserRoleType(department.ROLE_CODE) === RoleType.Security) {
-                    this.router.navigate([`/${this.AppUrl.Authen}/${this.AuthUrl.UserSetting}`]);
+                    this.router.navigate([`/${this.AppUrl.Authen}/${this.AuthUrl.Setting}/usersetting`]);
                   } else {
                     this.errorService.onRequestError('SIGN IN', { status: 401, error: 'Your role is unauthorized!' });
                   }
